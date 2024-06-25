@@ -1,0 +1,19 @@
+# https://gitlab.com/gitlab-org/charts/gitlab-agent/-/blob/v1.26.0/values.yaml
+
+%{~ if length(k8s_common_labels) > 0 }
+additionalLabels:
+%{~ for lbl_key, lbl_value in k8s_common_labels }
+  ${lbl_key}: "${lbl_value}"
+%{~ endfor ~}
+%{~ endif }
+
+replicas: ${agent_replicas}
+
+config:
+  kasAddress: "wss://${agent_kas_address}"
+  secretName: "${agent_token_secret_name}"
+
+resources:
+  requests:
+    cpu: 20m
+    memory: 32Mi

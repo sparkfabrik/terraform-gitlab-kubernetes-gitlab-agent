@@ -1,0 +1,5 @@
+namespace                          = "gitlab-agent"
+agent_kas_address                  = "kas.example.com"
+gitlab_agent_name                  = "awesome-gitlab-agent"
+gitlab_project_path_with_namespace = "my-org/my-root-namespace/my-project"
+helm_release_name                  = "awesome-gitlab-agent"
