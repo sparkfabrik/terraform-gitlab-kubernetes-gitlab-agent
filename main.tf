@@ -15,7 +15,7 @@ locals {
   k8s_gitlab_agent_token_secret_name_computed = replace(var.k8s_gitlab_agent_token_secret_name, "{{gitlab_agent_name}}", var.gitlab_agent_name)
 
   # Gitlab Agent configuration file
-  final_configuration_file_content = var.gitlab_agent_custom_config_file_content != "" ? var.gitlab_agent_custom_config_file_content : (var.gitlab_agent_grant_access_to_entire_root_namespace ? templatefile("${path.module}/files/config.yaml.tftpl", { root_namespace = data.gitlab_group.root_namespace.path }) : "")
+  final_configuration_file_content = var.gitlab_agent_custom_config_file_content != "" ? var.gitlab_agent_custom_config_file_content : (var.gitlab_agent_grant_access_to_entire_root_namespace ? templatefile("${path.module}/files/config.yaml.tftpl", { root_namespace = data.gitlab_group.root_namespace.path, gitlab_agent_append_to_config_file = var.gitlab_agent_append_to_config_file }) : "")
 
   # Gitlab Agent CI/CD variables
   gitlab_agent_kubernetes_context_variables = {
@@ -54,6 +54,12 @@ resource "gitlab_repository_file" "this" {
   file_path      = ".gitlab/agents/${gitlab_cluster_agent.this.name}/config.yaml"
   encoding       = "text"
   content        = local.final_configuration_file_content
+
+  # Force the creation of the file only after the creation of the helm release.
+  # This is to avoid the creation of the file before the creation of the agent.
+  depends_on = [
+    helm_release.this
+  ]
 }
 
 resource "gitlab_group_variable" "this" {
@@ -64,6 +70,12 @@ resource "gitlab_group_variable" "this" {
   value     = each.value
   protected = false
   masked    = false
+
+  # Force the creation of the variables only after the creation of the helm release.
+  # This is to avoid the use of the agent before the creation of the agent.
+  depends_on = [
+    helm_release.this
+  ]
 }
 
 # Kubernetes resources

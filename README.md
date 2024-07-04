@@ -50,6 +50,7 @@ provider "gitlab" {
 | <a name="input_agent_kas_address"></a> [agent\_kas\_address](#input\_agent\_kas\_address) | The address of the Gitlab Kubernetes Agent Server (KAS). | `string` | `"kas.gitlab.com"` | no |
 | <a name="input_agent_replicas"></a> [agent\_replicas](#input\_agent\_replicas) | The number of replicas of the Gitlab Agent. | `number` | `1` | no |
 | <a name="input_create_namespace"></a> [create\_namespace](#input\_create\_namespace) | Create namespace for the helm release. If false, the namespace must be created before using this module. | `bool` | `true` | no |
+| <a name="input_gitlab_agent_append_to_config_file"></a> [gitlab\_agent\_append\_to\_config\_file](#input\_gitlab\_agent\_append\_to\_config\_file) | Append the Gitlab Agent configuration to the configuration file created for the entire root namespace. This variable is only used when `gitlab_agent_grant_access_to_entire_root_namespace` is true. | `string` | `""` | no |
 | <a name="input_gitlab_agent_branch_name"></a> [gitlab\_agent\_branch\_name](#input\_gitlab\_agent\_branch\_name) | The branch name where the Gitlab Agent configuration will be stored. | `string` | `"main"` | no |
 | <a name="input_gitlab_agent_commmit_message"></a> [gitlab\_agent\_commmit\_message](#input\_gitlab\_agent\_commmit\_message) | The commit message to use when committing the Gitlab Agent configuration file. You can use the placeholder `{{gitlab_agent_name}}` to reference the Gitlab Agent name. | `string` | `"[CI] Add agent config file for {{gitlab_agent_name}}"` | no |
 | <a name="input_gitlab_agent_create_variables_in_root_namespace"></a> [gitlab\_agent\_create\_variables\_in\_root\_namespace](#input\_gitlab\_agent\_create\_variables\_in\_root\_namespace) | Create two Gitlab CI/CD variables in the root namespace useful to configure the Kubernetes context and use the Gitlab Agent. These variables are created in the root namespace of the project defined in `gitlab_project_path_with_namespace`, which is the project that hosts the Gitlab Agent configuration. | `bool` | `true` | no |
@@ -96,6 +97,5 @@ provider "gitlab" {
 ## Modules
 
 No modules.
-
 
 <!-- END_TF_DOCS -->
