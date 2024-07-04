@@ -1,3 +1,7 @@
 ci_access:
   groups:
     - id: ${root_namespace}
+
+%{~ if trimspace(gitlab_agent_append_to_config_file) != "" }
+${gitlab_agent_append_to_config_file}
+%{~ endif ~}
