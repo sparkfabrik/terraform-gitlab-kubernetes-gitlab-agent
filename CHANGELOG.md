@@ -8,9 +8,19 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.3.0] - 2024-07-10
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/0.2.0...0.3.0)
+
+### Added
+
+- Add the `create_default_pod_anti_affinity` variable to allow the creation of the default podAntiAffinity rule in the helm values.
+
 ## [0.2.0] - 2024-07-04
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/0.1.0...0.2.0)
+
+### Added
 
 - Add dependency on the Gitlab variables to prevent their creation before the helm release.
 - Add the `gitlab_agent_append_to_config_file` variable to allow customizations to the agent configuration file keeping the access for the root namespace managed by the module.

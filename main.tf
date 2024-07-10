@@ -129,6 +129,9 @@ resource "helm_release" "this" {
           agent_replicas          = var.agent_replicas
           agent_kas_address       = var.agent_kas_address
           agent_token_secret_name = kubernetes_secret_v1.gitlab_agent_token_secret.metadata[0].name
+          # Variables used to configure the default podAntiAffinity for the Gitlab Agent
+          create_default_pod_anti_affinity = var.create_default_pod_anti_affinity
+          helm_release_name                = var.helm_release_name
         }
       ),
     ],
