@@ -131,3 +131,9 @@ variable "agent_kas_address" {
   type        = string
   default     = "kas.gitlab.com"
 }
+
+variable "create_default_pod_anti_affinity" {
+  description = "Create default podAntiAffinity rules for the Gitlab Agent pods."
+  type        = bool
+  default     = true
+}

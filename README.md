@@ -49,6 +49,7 @@ provider "gitlab" {
 |------|-------------|------|---------|:--------:|
 | <a name="input_agent_kas_address"></a> [agent\_kas\_address](#input\_agent\_kas\_address) | The address of the Gitlab Kubernetes Agent Server (KAS). | `string` | `"kas.gitlab.com"` | no |
 | <a name="input_agent_replicas"></a> [agent\_replicas](#input\_agent\_replicas) | The number of replicas of the Gitlab Agent. | `number` | `1` | no |
+| <a name="input_create_default_pod_anti_affinity"></a> [create\_default\_pod\_anti\_affinity](#input\_create\_default\_pod\_anti\_affinity) | Create default podAntiAffinity rules for the Gitlab Agent pods. | `bool` | `true` | no |
 | <a name="input_create_namespace"></a> [create\_namespace](#input\_create\_namespace) | Create namespace for the helm release. If false, the namespace must be created before using this module. | `bool` | `true` | no |
 | <a name="input_gitlab_agent_append_to_config_file"></a> [gitlab\_agent\_append\_to\_config\_file](#input\_gitlab\_agent\_append\_to\_config\_file) | Append the Gitlab Agent configuration to the configuration file created for the entire root namespace. This variable is only used when `gitlab_agent_grant_access_to_entire_root_namespace` is true. | `string` | `""` | no |
 | <a name="input_gitlab_agent_branch_name"></a> [gitlab\_agent\_branch\_name](#input\_gitlab\_agent\_branch\_name) | The branch name where the Gitlab Agent configuration will be stored. | `string` | `"main"` | no |

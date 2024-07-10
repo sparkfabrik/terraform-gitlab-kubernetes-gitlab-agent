@@ -17,3 +17,21 @@ resources:
   requests:
     cpu: 20m
     memory: 32Mi
+
+%{~ if create_default_pod_anti_affinity }
+# We leverage the Helm standard labels for the helm release name (`app.kubernetes.io/instance`)
+# to create a default pod anti-affinity rule for the agent pods. Refer to the Helm documentation
+# about standard labels here: https://helm.sh/docs/chart_best_practices/labels/#standard-labels.
+affinity:
+  podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/instance
+              operator: In
+              values:
+              - "${helm_release_name}"
+          topologyKey: kubernetes.io/hostname
+%{~ endif ~}
