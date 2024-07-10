@@ -8,6 +8,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.4.0] - 2024-07-10
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/0.3.0...0.4.0)
+
+### Added
+
+- Add the `gitlab_agents_project_id` and `gitlab_root_namespace_id` outputs to allow the retrieval of the Gitlab project and root namespace IDs.
+
 ## [0.3.0] - 2024-07-10
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/0.2.0...0.3.0)

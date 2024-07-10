@@ -77,6 +77,8 @@ provider "gitlab" {
 |------|-------------|
 | <a name="output_gitlab_agent_kubernetes_context_variables"></a> [gitlab\_agent\_kubernetes\_context\_variables](#output\_gitlab\_agent\_kubernetes\_context\_variables) | The Gitlab Agent information to be used to configure the Kubernetes context. |
 | <a name="output_gitlab_agent_token"></a> [gitlab\_agent\_token](#output\_gitlab\_agent\_token) | The token of the Gitlab Agent. |
+| <a name="output_gitlab_agents_project_id"></a> [gitlab\_agents\_project\_id](#output\_gitlab\_agents\_project\_id) | The ID of the Gitlab project where the Gitlab Agents are installed. |
+| <a name="output_gitlab_root_namespace_id"></a> [gitlab\_root\_namespace\_id](#output\_gitlab\_root\_namespace\_id) | The ID of the root namespace of the Gitlab Agents project. |
 | <a name="output_k8s_common_labels"></a> [k8s\_common\_labels](#output\_k8s\_common\_labels) | Common labels to apply to the kubernetes resources. |
 | <a name="output_k8s_gitlab_agent_token_secret_name"></a> [k8s\_gitlab\_agent\_token\_secret\_name](#output\_k8s\_gitlab\_agent\_token\_secret\_name) | The name of the Kubernetes secret that will store the Gitlab Agent token. |
 
