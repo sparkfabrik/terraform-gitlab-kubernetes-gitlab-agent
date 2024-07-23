@@ -15,7 +15,7 @@ locals {
   k8s_gitlab_agent_token_secret_name_computed = replace(var.k8s_gitlab_agent_token_secret_name, "{{gitlab_agent_name}}", var.gitlab_agent_name)
 
   # Gitlab Agent configuration file
-  final_configuration_file_content = var.gitlab_agent_custom_config_file_content != "" ? var.gitlab_agent_custom_config_file_content : (var.gitlab_agent_grant_access_to_entire_root_namespace ? templatefile("${path.module}/files/config.yaml.tftpl", { root_namespace = data.gitlab_group.root_namespace.path, gitlab_agent_append_to_config_file = var.gitlab_agent_append_to_config_file }) : "")
+  final_configuration_file_content = var.gitlab_agent_custom_config_file_content != "" ? var.gitlab_agent_custom_config_file_content : (var.gitlab_agent_grant_access_to_entire_root_namespace ? templatefile("${path.module}/files/config.yaml.tftpl", { root_namespace = data.gitlab_group.root_namespace.path, gitlab_agent_append_to_config_file = var.gitlab_agent_append_to_config_file, gitlab_agent_grant_user_access_to_root_namespace = var.gitlab_agent_grant_user_access_to_root_namespace }) : "")
 
   # Gitlab Agent CI/CD variables
   gitlab_agent_kubernetes_context_variables = {
