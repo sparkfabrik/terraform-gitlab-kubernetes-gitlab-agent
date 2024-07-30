@@ -26,6 +26,12 @@ variable "gitlab_agent_grant_access_to_entire_root_namespace" {
   default     = true
 }
 
+variable "gitlab_agent_grant_user_access_to_root_namespace" {
+  description = "Grant `user_access` to the root namespace."
+  type        = bool
+  default     = false
+}
+
 variable "gitlab_agent_append_to_config_file" {
   description = "Append the Gitlab Agent configuration to the configuration file created for the entire root namespace. This variable is only used when `gitlab_agent_grant_access_to_entire_root_namespace` is true."
   type        = string

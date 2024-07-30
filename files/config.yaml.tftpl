@@ -2,6 +2,14 @@ ci_access:
   groups:
     - id: ${root_namespace}
 
+%{~ if gitlab_agent_grant_user_access_to_root_namespace }
+user_access:
+  access_as:
+    agent: {}
+  groups:
+    - id: ${root_namespace}
+%{~ endif ~}
+
 %{~ if trimspace(gitlab_agent_append_to_config_file) != "" }
 ${gitlab_agent_append_to_config_file}
 %{~ endif ~}
