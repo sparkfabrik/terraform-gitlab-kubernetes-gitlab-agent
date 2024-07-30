@@ -96,7 +96,7 @@ variable "helm_release_name" {
 variable "helm_chart_version" {
   description = "The version of the gitlab-agent Helm chart. You can see the available versions at https://gitlab.com/gitlab-org/charts/gitlab-agent/-/tags, or using the command `helm search repo gitlab/gitlab-agent -l` after adding the Gitlab Helm repository."
   type        = string
-  default     = "1.26.0"
+  default     = "2.5.0"
 }
 
 variable "helm_additional_values" {
