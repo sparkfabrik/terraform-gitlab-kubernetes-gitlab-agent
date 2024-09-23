@@ -8,7 +8,15 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-## [0.6.0] - 2024-07-30
+## [0.7.0] - 2024-09-23
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/0.6.0...0.7.0)
+
+### Changed
+
+- Upgrade the default Helm chart to version `2.7.0`.
+
+# [0.6.0] - 2024-07-30
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/0.5.0...0.6.0)
 
