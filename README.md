@@ -65,7 +65,7 @@ provider "gitlab" {
 | <a name="input_gitlab_agent_variable_name_agent_project"></a> [gitlab\_agent\_variable\_name\_agent\_project](#input\_gitlab\_agent\_variable\_name\_agent\_project) | The name of the Gitlab CI/CD variable that stores the Gitlab Agent project path. | `string` | `"GITLAB_AGENT_PROJECT"` | no |
 | <a name="input_gitlab_project_path_with_namespace"></a> [gitlab\_project\_path\_with\_namespace](#input\_gitlab\_project\_path\_with\_namespace) | The path with namespace of the Gitlab project that hosts the Gitlab Agent configuration. The project must be created in Gitlab before running this module. The configured Gitlab provider must have write access to the project. | `string` | n/a | yes |
 | <a name="input_helm_additional_values"></a> [helm\_additional\_values](#input\_helm\_additional\_values) | Additional values to be passed to the Helm chart. | `list(string)` | `[]` | no |
-| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | The version of the gitlab-agent Helm chart. You can see the available versions at https://gitlab.com/gitlab-org/charts/gitlab-agent/-/tags, or using the command `helm search repo gitlab/gitlab-agent -l` after adding the Gitlab Helm repository. | `string` | `"2.5.0"` | no |
+| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | The version of the gitlab-agent Helm chart. You can see the available versions at https://gitlab.com/gitlab-org/charts/gitlab-agent/-/tags, or using the command `helm search repo gitlab/gitlab-agent -l` after adding the Gitlab Helm repository. | `string` | `"2.6.2"` | no |
 | <a name="input_helm_release_name"></a> [helm\_release\_name](#input\_helm\_release\_name) | The name of the Helm release. | `string` | `"gitlab-agent"` | no |
 | <a name="input_k8s_additional_labels"></a> [k8s\_additional\_labels](#input\_k8s\_additional\_labels) | Additional labels to apply to the kubernetes resources. | `map(string)` | `{}` | no |
 | <a name="input_k8s_default_labels"></a> [k8s\_default\_labels](#input\_k8s\_default\_labels) | Labels to apply to the kubernetes resources. These are opinionated labels, you can add more labels using the variable `additional_k8s_labels`. If you want to remove a label, you can override it with an empty map(string). | `map(string)` | <pre>{<br>  "managed-by": "terraform",<br>  "scope": "gitlab-agent"<br>}</pre> | no |
@@ -96,7 +96,6 @@ provider "gitlab" {
 | [kubernetes_secret_v1.gitlab_agent_token_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
 | [gitlab_group.root_namespace](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
 | [gitlab_project.this](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/project) | data source |
-| [kubernetes_namespace_v1.this](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/data-sources/namespace_v1) | data source |
 
 ## Modules
 
