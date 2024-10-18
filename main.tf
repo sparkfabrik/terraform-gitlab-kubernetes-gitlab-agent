@@ -7,7 +7,7 @@ locals {
     var.k8s_additional_labels,
   )
 
-  final_namespace = var.create_namespace ? resource.kubernetes_namespace_v1.this[0].metadata[0].name : data.kubernetes_namespace_v1.this[0].metadata[0].name
+  final_namespace = var.create_namespace ? resource.kubernetes_namespace_v1.this[0].metadata[0].name : var.namespace
 
   gitlab_agent_token_name_computed            = replace(var.gitlab_agent_token_name, "{{gitlab_agent_name}}", var.gitlab_agent_name)
   gitlab_agent_token_description_computed     = replace(var.gitlab_agent_token_description, "{{gitlab_agent_name}}", var.gitlab_agent_name)
@@ -88,14 +88,6 @@ resource "kubernetes_namespace_v1" "this" {
       local.k8s_common_labels,
     )
 
-    name = var.namespace
-  }
-}
-
-data "kubernetes_namespace_v1" "this" {
-  count = var.create_namespace ? 0 : 1
-
-  metadata {
     name = var.namespace
   }
 }
