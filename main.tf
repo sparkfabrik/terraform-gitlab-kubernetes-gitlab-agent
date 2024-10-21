@@ -47,12 +47,13 @@ data "gitlab_group" "root_namespace" {
 }
 
 resource "gitlab_cluster_agent" "this" {
-  project = locals.project_id
+  project = local.project_id
   name    = var.gitlab_agent_name
 }
 
 resource "gitlab_cluster_agent_token" "this" {
-  project     = locals.project_id
+  project = local.project_id
+
   agent_id    = gitlab_cluster_agent.this.agent_id
   name        = local.gitlab_agent_token_name_computed
   description = local.gitlab_agent_token_description_computed
@@ -61,7 +62,8 @@ resource "gitlab_cluster_agent_token" "this" {
 resource "gitlab_repository_file" "this" {
   count = trimspace(local.final_configuration_file_content) != "" ? 1 : 0
 
-  project        = locals.project_id
+  project = local.project_id
+
   branch         = var.gitlab_agent_branch_name
   commit_message = local.gitlab_agent_commmit_message_computed
   file_path      = ".gitlab/agents/${gitlab_cluster_agent.this.name}/config.yaml"
