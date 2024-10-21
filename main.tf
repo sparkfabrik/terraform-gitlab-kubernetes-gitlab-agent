@@ -43,7 +43,7 @@ data "gitlab_project" "this" {
 
 data "gitlab_group" "root_namespace" {
   #group_id = data.gitlab_project.this.namespace_id
-  full_path = var.gitlab_root_namespace
+  full_path = var.gitlab_project_details.group
 }
 
 resource "gitlab_cluster_agent" "this" {
