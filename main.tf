@@ -22,8 +22,8 @@ locals {
     (var.gitlab_agent_variable_name_agent_id) : gitlab_cluster_agent.this.name,
     (var.gitlab_agent_variable_name_agent_project) : data.gitlab_project.this[0].path_with_namespace,
   }
-
-  project_id = length(gitlab_project.project[0].id) > 0 ? gitlab_project.project[0].id : data.gitlab_project.this[0].id
+  use_existing_project = var.gitlab_project_name == "" ? 1 : 0
+  project_id           = local.use_existing_project == 1 ? data.gitlab_project.this[0].id : gitlab_project.project[0].id
 
 
 }
@@ -31,13 +31,13 @@ locals {
 # Gitlab resources
 
 resource "gitlab_project" "project" {
-  count        = length(var.gitlab_project_details.name) > 0 ? 1 : 0
-  name         = var.gitlab_project_details.name
+  count        = local.use_existing_project == 0 ? 1 : 0
+  name         = var.gitlab_project_name
   namespace_id = data.gitlab_group.root_namespace.group_id
 }
 
 data "gitlab_project" "this" {
-  count               = length(var.gitlab_project_details.name) > 0 ? 0 : 1
+  count               = local.use_existing_project
   path_with_namespace = var.gitlab_project_path_with_namespace
 }
 

@@ -1,3 +1,9 @@
+variable "gitlab_project_name" {
+  description = "The name of the Gitlab project that hosts the Gitlab Agent configuration. If not provided, the module will use the project defined in `gitlab_project_path_with_namespace`."
+  type        = string
+  default     = ""
+}
+
 variable "gitlab_project_details" {
   description = "Details of the Gitlab project including name, group, and description"
   type = object({
