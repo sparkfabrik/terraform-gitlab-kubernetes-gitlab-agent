@@ -12,6 +12,11 @@ variable "gitlab_project_details" {
   }
 }
 
+variable "gitlab_root_namespace" {
+  description = "The full path of the root namespace in Gitlab. This is the namespace where the Gitlab Agent will be granted access."
+  type        = string
+}
+
 variable "gitlab_project_path_with_namespace" {
   description = "The path with namespace of the Gitlab project that hosts the Gitlab Agent configuration. The project must be created in Gitlab before running this module. The configured Gitlab provider must have write access to the project."
   type        = string

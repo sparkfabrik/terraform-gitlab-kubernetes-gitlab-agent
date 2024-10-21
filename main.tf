@@ -29,7 +29,7 @@ locals {
 resource "gitlab_project" "project" {
   count        = length(var.gitlab_project_details.name) > 0 ? 0 : 1
   name         = var.gitlab_project_details.name
-  namespace_id = var.gitlab_project_details.group
+  namespace_id = data.gitlab_group.root_namespace.group_id
   description  = var.gitlab_project_details.description
 }
 
@@ -38,7 +38,8 @@ data "gitlab_project" "this" {
 }
 
 data "gitlab_group" "root_namespace" {
-  group_id = data.gitlab_project.this.namespace_id
+  #group_id = data.gitlab_project.this.namespace_id
+  full_path = var.gitlab_root_namespace
 }
 
 resource "gitlab_cluster_agent" "this" {
