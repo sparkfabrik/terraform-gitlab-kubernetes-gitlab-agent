@@ -23,7 +23,7 @@ locals {
     (var.gitlab_agent_variable_name_agent_project) : data.gitlab_project.this.path_with_namespace,
   }
 
-  project_id = length(gitlab_project.project[0].id) > 0 ? gitlab_project.project[0].id : data.gitlab_project.this.id[0]
+  project_id = length(gitlab_project.project[0].id) > 0 ? gitlab_project.project[0].id : data.gitlab_project.this[0].id
 
 
 }
