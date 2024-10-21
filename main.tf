@@ -9,6 +9,9 @@ locals {
 
   final_namespace = var.create_namespace ? resource.kubernetes_namespace_v1.this[0].metadata[0].name : data.kubernetes_namespace_v1.this[0].metadata[0].name
 
+  use_existing_project = var.gitlab_project_name == "" ? 1 : 0
+  project_id           = local.use_existing_project == 1 ? data.gitlab_project.this[0].id : gitlab_project.project[0].id
+
   gitlab_agent_token_name_computed            = replace(var.gitlab_agent_token_name, "{{gitlab_agent_name}}", var.gitlab_agent_name)
   gitlab_agent_token_description_computed     = replace(var.gitlab_agent_token_description, "{{gitlab_agent_name}}", var.gitlab_agent_name)
   gitlab_agent_commmit_message_computed       = replace(var.gitlab_agent_commmit_message, "{{gitlab_agent_name}}", var.gitlab_agent_name)
@@ -22,10 +25,6 @@ locals {
     (var.gitlab_agent_variable_name_agent_id) : gitlab_cluster_agent.this.name,
     (var.gitlab_agent_variable_name_agent_project) : local.use_existing_project == 1 ? data.gitlab_project.this[0].path_with_namespace : gitlab_project.project[0].path_with_namespace,
   }
-  use_existing_project = var.gitlab_project_name == "" ? 1 : 0
-  project_id           = local.use_existing_project == 1 ? data.gitlab_project.this[0].id : gitlab_project.project[0].id
-
-
 }
 
 # Gitlab resources

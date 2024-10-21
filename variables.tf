@@ -4,19 +4,6 @@ variable "gitlab_project_name" {
   default     = ""
 }
 
-variable "gitlab_project_details" {
-  description = "Details of the Gitlab project including name, group, and description"
-  type = object({
-    name  = string
-    group = string
-  })
-  default = {
-    name        = ""
-    group       = ""
-    description = ""
-  }
-}
-
 variable "gitlab_root_namespace" {
   description = "The full path of the root namespace in Gitlab. This is the namespace where the Gitlab Agent will be granted access."
   type        = string
