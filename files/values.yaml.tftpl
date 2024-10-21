@@ -10,7 +10,7 @@ additionalLabels:
 replicas: ${agent_replicas}
 
 config:
-  kasAddress: "wss://${agent_kas_address}"
+  kasAddress: "${agent_kas_address}"
   secretName: "${agent_token_secret_name}"
 
 resources:
