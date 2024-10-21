@@ -1,9 +1,8 @@
 variable "gitlab_project_details" {
   description = "Details of the Gitlab project including name, group, and description"
   type = object({
-    name        = string
-    group       = string
-    description = string
+    name  = string
+    group = string
   })
   default = {
     name        = ""
