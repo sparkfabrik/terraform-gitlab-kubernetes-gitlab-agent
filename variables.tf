@@ -143,12 +143,6 @@ variable "agent_replicas" {
   default     = 1
 }
 
-variable "agent_kas_address" {
-  description = "The address of the Gitlab Kubernetes Agent Server (KAS)."
-  type        = string
-  default     = "kas.gitlab.com"
-}
-
 variable "create_default_pod_anti_affinity" {
   description = "Create default podAntiAffinity rules for the Gitlab Agent pods."
   type        = bool
