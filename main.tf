@@ -28,12 +28,7 @@ locals {
 }
 
 # Gitlab resources
-
-resource "gitlab_project" "project" {
-  count        = local.use_existing_project == 0 ? 1 : 0
-  name         = var.gitlab_project_name
-  namespace_id = data.gitlab_group.root_namespace.group_id
-}
+data "gitlab_metadata" "this" {}
 
 data "gitlab_project" "this" {
   count               = local.use_existing_project
@@ -43,6 +38,12 @@ data "gitlab_project" "this" {
 data "gitlab_group" "root_namespace" {
   #group_id = data.gitlab_project.this.namespace_id
   full_path = var.gitlab_root_namespace
+}
+
+resource "gitlab_project" "project" {
+  count        = local.use_existing_project == 0 ? 1 : 0
+  name         = var.gitlab_project_name
+  namespace_id = data.gitlab_group.root_namespace.group_id
 }
 
 resource "gitlab_cluster_agent" "this" {
@@ -141,7 +142,7 @@ resource "helm_release" "this" {
         {
           k8s_common_labels       = local.k8s_common_labels
           agent_replicas          = var.agent_replicas
-          agent_kas_address       = var.agent_kas_address
+          agent_kas_address       = data.gitlab_metadata.this.kas.external_url
           agent_token_secret_name = kubernetes_secret_v1.gitlab_agent_token_secret.metadata[0].name
           # Variables used to configure the default podAntiAffinity for the Gitlab Agent
           create_default_pod_anti_affinity = var.create_default_pod_anti_affinity
