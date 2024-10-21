@@ -27,7 +27,7 @@ locals {
 # Gitlab resources
 
 resource "gitlab_project" "project" {
-  count        = var.gitlab_project_details ? 0 : 1
+  count        = var.gitlab_project_details.name ? 0 : 1
   name         = var.gitlab_project_details.name
   namespace_id = var.gitlab_project_details.group
   description  = var.gitlab_project_details.description
