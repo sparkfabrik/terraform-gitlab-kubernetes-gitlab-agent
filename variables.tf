@@ -1,3 +1,17 @@
+variable "gitlab_project_details" {
+  description = "Details of the Gitlab project including name, group, and description"
+  type = object({
+    name        = string
+    group       = string
+    description = string
+  })
+  default = {
+    name        = ""
+    group       = ""
+    description = ""
+  }
+}
+
 variable "gitlab_project_path_with_namespace" {
   description = "The path with namespace of the Gitlab project that hosts the Gitlab Agent configuration. The project must be created in Gitlab before running this module. The configured Gitlab provider must have write access to the project."
   type        = string

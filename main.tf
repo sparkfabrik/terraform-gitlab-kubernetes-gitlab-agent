@@ -25,6 +25,14 @@ locals {
 }
 
 # Gitlab resources
+
+resource "gitlab_project" "project" {
+  count        = var.gitlab_project_details ? 0 : 1
+  name         = var.gitlab_project_details.name
+  namespace_id = var.gitlab.project_details.group
+  description  = var.gitlab_project_details.description
+}
+
 data "gitlab_project" "this" {
   path_with_namespace = var.gitlab_project_path_with_namespace
 }
