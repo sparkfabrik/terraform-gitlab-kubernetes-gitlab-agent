@@ -8,7 +8,7 @@ If required (`gitlab_agent_grant_access_to_entire_root_namespace` configured to 
 
 **ATTENTION**: you have to manually create the project that will host the Gitlab Agent configuration in Gitlab before running this module.
 
-From version 0.7.0 if you set `gitlab_project_name` the module will create gitlab project automatically. This new behavior requires the provider to have the proper permissions to create the project in the namespace.
+From version `0.7.0`, if you set `gitlab_project_name` the module will create Gitlab project automatically. This new behavior requires the provider to have the proper permissions to create the project in the namespace.
 
 ## RBAC configuration for the Gitlab Agent service account
 
