@@ -9,9 +9,10 @@ locals {
 
   final_namespace = var.create_namespace ? resource.kubernetes_namespace_v1.this[0].metadata[0].name : data.kubernetes_namespace_v1.this[0].metadata[0].name
 
-  use_existing_project = var.gitlab_project_name == "" ? 1 : 0
-  project_id                                      = local.use_existing_project == 1 ? data.gitlab_project.this[0].id : gitlab_project.project[0].id
+  use_existing_project        = var.gitlab_project_name == "" ? 1 : 0
+  project_id                  = local.use_existing_project == 1 ? data.gitlab_project.this[0].id : gitlab_project.project[0].id
   project_path_with_namespace = local.use_existing_project == 1 ? data.gitlab_project.this[0].path_with_namespace : gitlab_project.project[0].path_with_namespace
+  project_root_namespace      = split("/", var.gitlab_project_path_with_namespace)[0]
 
   gitlab_agent_token_name_computed            = replace(var.gitlab_agent_token_name, "{{gitlab_agent_name}}", var.gitlab_agent_name)
   gitlab_agent_token_description_computed     = replace(var.gitlab_agent_token_description, "{{gitlab_agent_name}}", var.gitlab_agent_name)
@@ -37,7 +38,7 @@ data "gitlab_project" "this" {
 }
 
 data "gitlab_group" "root_namespace" {
-  full_path = var.gitlab_root_namespace
+  full_path = local.project_root_namespace
 }
 
 resource "gitlab_project" "project" {
