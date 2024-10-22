@@ -21,7 +21,7 @@ output "gitlab_agent_kubernetes_context_variables" {
 
 output "gitlab_agents_project_id" {
   description = "The ID of the Gitlab project where the Gitlab Agents are installed."
-  value       = data.gitlab_project.this.id
+  value       = local.project_id
 }
 
 output "gitlab_root_namespace_id" {

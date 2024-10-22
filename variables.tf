@@ -1,3 +1,9 @@
+variable "gitlab_project_name" {
+  description = "The name of the Gitlab project that hosts the Gitlab Agent configuration. If not provided, the module will use the project defined in `gitlab_project_path_with_namespace`."
+  type        = string
+  default     = ""
+}
+
 variable "gitlab_project_path_with_namespace" {
   description = "The path with namespace of the Gitlab project that hosts the Gitlab Agent configuration. The project must be created in Gitlab before running this module. The configured Gitlab provider must have write access to the project."
   type        = string
@@ -130,12 +136,6 @@ variable "agent_replicas" {
   description = "The number of replicas of the Gitlab Agent."
   type        = number
   default     = 1
-}
-
-variable "agent_kas_address" {
-  description = "The address of the Gitlab Kubernetes Agent Server (KAS)."
-  type        = string
-  default     = "kas.gitlab.com"
 }
 
 variable "create_default_pod_anti_affinity" {

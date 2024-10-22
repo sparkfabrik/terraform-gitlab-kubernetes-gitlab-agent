@@ -8,6 +8,8 @@ If required (`gitlab_agent_grant_access_to_entire_root_namespace` configured to 
 
 **ATTENTION**: you have to manually create the project that will host the Gitlab Agent configuration in Gitlab before running this module.
 
+From version `0.7.0`, if you set `gitlab_project_name` the module will create Gitlab project automatically. This new behavior requires the provider to have the proper permissions to create the project in the namespace.
+
 ## RBAC configuration for the Gitlab Agent service account
 
 This module uses the default configuration of the Gitlab Agent Helm chart. The default configuration grants to the Gitlab Agent service account the `cluster-admin` ClusterRole. If you want to change this configuration, you can use the `helm_additional_values` variable to pass additional values to the Helm chart.

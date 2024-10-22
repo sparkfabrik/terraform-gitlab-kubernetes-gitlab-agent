@@ -9,6 +9,11 @@ locals {
 
   final_namespace = var.create_namespace ? resource.kubernetes_namespace_v1.this[0].metadata[0].name : data.kubernetes_namespace_v1.this[0].metadata[0].name
 
+  use_existing_project        = var.gitlab_project_name == "" ? 1 : 0
+  project_id                  = local.use_existing_project == 1 ? data.gitlab_project.this[0].id : gitlab_project.project[0].id
+  project_path_with_namespace = local.use_existing_project == 1 ? data.gitlab_project.this[0].path_with_namespace : gitlab_project.project[0].path_with_namespace
+  project_root_namespace      = split("/", var.gitlab_project_path_with_namespace)[0]
+
   gitlab_agent_token_name_computed            = replace(var.gitlab_agent_token_name, "{{gitlab_agent_name}}", var.gitlab_agent_name)
   gitlab_agent_token_description_computed     = replace(var.gitlab_agent_token_description, "{{gitlab_agent_name}}", var.gitlab_agent_name)
   gitlab_agent_commmit_message_computed       = replace(var.gitlab_agent_commmit_message, "{{gitlab_agent_name}}", var.gitlab_agent_name)
@@ -20,26 +25,36 @@ locals {
   # Gitlab Agent CI/CD variables
   gitlab_agent_kubernetes_context_variables = {
     (var.gitlab_agent_variable_name_agent_id) : gitlab_cluster_agent.this.name,
-    (var.gitlab_agent_variable_name_agent_project) : data.gitlab_project.this.path_with_namespace,
+    (var.gitlab_agent_variable_name_agent_project) : local.project_path_with_namespace,
   }
 }
 
 # Gitlab resources
+data "gitlab_metadata" "this" {}
+
 data "gitlab_project" "this" {
+  count               = local.use_existing_project
   path_with_namespace = var.gitlab_project_path_with_namespace
 }
 
 data "gitlab_group" "root_namespace" {
-  group_id = data.gitlab_project.this.namespace_id
+  full_path = local.project_root_namespace
+}
+
+resource "gitlab_project" "project" {
+  count        = local.use_existing_project == 0 ? 1 : 0
+  name         = var.gitlab_project_name
+  namespace_id = data.gitlab_group.root_namespace.group_id
 }
 
 resource "gitlab_cluster_agent" "this" {
-  project = data.gitlab_project.this.id
+  project = local.project_id
   name    = var.gitlab_agent_name
 }
 
 resource "gitlab_cluster_agent_token" "this" {
-  project     = data.gitlab_project.this.id
+  project = local.project_id
+
   agent_id    = gitlab_cluster_agent.this.agent_id
   name        = local.gitlab_agent_token_name_computed
   description = local.gitlab_agent_token_description_computed
@@ -48,7 +63,8 @@ resource "gitlab_cluster_agent_token" "this" {
 resource "gitlab_repository_file" "this" {
   count = trimspace(local.final_configuration_file_content) != "" ? 1 : 0
 
-  project        = data.gitlab_project.this.id
+  project = local.project_id
+
   branch         = var.gitlab_agent_branch_name
   commit_message = local.gitlab_agent_commmit_message_computed
   file_path      = ".gitlab/agents/${gitlab_cluster_agent.this.name}/config.yaml"
@@ -127,7 +143,7 @@ resource "helm_release" "this" {
         {
           k8s_common_labels       = local.k8s_common_labels
           agent_replicas          = var.agent_replicas
-          agent_kas_address       = var.agent_kas_address
+          agent_kas_address       = data.gitlab_metadata.this.kas.external_url
           agent_token_secret_name = kubernetes_secret_v1.gitlab_agent_token_secret.metadata[0].name
           # Variables used to configure the default podAntiAffinity for the Gitlab Agent
           create_default_pod_anti_affinity = var.create_default_pod_anti_affinity

@@ -8,6 +8,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.7.0] - 2024-10-22
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/0.6.0...0.7.0)
+
+### Added
+
+- The module can create the gitlab agents project by setting the variable `gitlab_project_name`.
+
 ## [0.6.0] - 2024-07-30
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/0.5.0...0.6.0)
