@@ -49,7 +49,6 @@ provider "gitlab" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_agent_kas_address"></a> [agent\_kas\_address](#input\_agent\_kas\_address) | The address of the Gitlab Kubernetes Agent Server (KAS). | `string` | `"kas.gitlab.com"` | no |
 | <a name="input_agent_replicas"></a> [agent\_replicas](#input\_agent\_replicas) | The number of replicas of the Gitlab Agent. | `number` | `1` | no |
 | <a name="input_create_default_pod_anti_affinity"></a> [create\_default\_pod\_anti\_affinity](#input\_create\_default\_pod\_anti\_affinity) | Create default podAntiAffinity rules for the Gitlab Agent pods. | `bool` | `true` | no |
 | <a name="input_create_namespace"></a> [create\_namespace](#input\_create\_namespace) | Create namespace for the helm release. If false, the namespace must be created before using this module. | `bool` | `true` | no |
@@ -65,12 +64,13 @@ provider "gitlab" {
 | <a name="input_gitlab_agent_token_name"></a> [gitlab\_agent\_token\_name](#input\_gitlab\_agent\_token\_name) | The name of the Gitlab Agent token.  You can use the placeholder `{{gitlab_agent_name}}` to reference the Gitlab Agent name. | `string` | `"{{gitlab_agent_name}}-token"` | no |
 | <a name="input_gitlab_agent_variable_name_agent_id"></a> [gitlab\_agent\_variable\_name\_agent\_id](#input\_gitlab\_agent\_variable\_name\_agent\_id) | The name of the Gitlab CI/CD variable that stores the Gitlab Agent ID. | `string` | `"GITLAB_AGENT_ID"` | no |
 | <a name="input_gitlab_agent_variable_name_agent_project"></a> [gitlab\_agent\_variable\_name\_agent\_project](#input\_gitlab\_agent\_variable\_name\_agent\_project) | The name of the Gitlab CI/CD variable that stores the Gitlab Agent project path. | `string` | `"GITLAB_AGENT_PROJECT"` | no |
+| <a name="input_gitlab_project_name"></a> [gitlab\_project\_name](#input\_gitlab\_project\_name) | The name of the Gitlab project that hosts the Gitlab Agent configuration. If not provided, the module will use the project defined in `gitlab_project_path_with_namespace`. | `string` | `""` | no |
 | <a name="input_gitlab_project_path_with_namespace"></a> [gitlab\_project\_path\_with\_namespace](#input\_gitlab\_project\_path\_with\_namespace) | The path with namespace of the Gitlab project that hosts the Gitlab Agent configuration. The project must be created in Gitlab before running this module. The configured Gitlab provider must have write access to the project. | `string` | n/a | yes |
 | <a name="input_helm_additional_values"></a> [helm\_additional\_values](#input\_helm\_additional\_values) | Additional values to be passed to the Helm chart. | `list(string)` | `[]` | no |
-| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | The version of the gitlab-agent Helm chart. You can see the available versions at https://gitlab.com/gitlab-org/charts/gitlab-agent/-/tags, or using the command `helm search repo gitlab/gitlab-agent -l` after adding the Gitlab Helm repository. | `string` | `"2.5.0"` | no |
+| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | The version of the gitlab-agent Helm chart. You can see the available versions at https://gitlab.com/gitlab-org/charts/gitlab-agent/-/tags, or using the command `helm search repo gitlab/gitlab-agent -l` after adding the Gitlab Helm repository. | `string` | `"2.11.0"` | no |
 | <a name="input_helm_release_name"></a> [helm\_release\_name](#input\_helm\_release\_name) | The name of the Helm release. | `string` | `"gitlab-agent"` | no |
 | <a name="input_k8s_additional_labels"></a> [k8s\_additional\_labels](#input\_k8s\_additional\_labels) | Additional labels to apply to the kubernetes resources. | `map(string)` | `{}` | no |
-| <a name="input_k8s_default_labels"></a> [k8s\_default\_labels](#input\_k8s\_default\_labels) | Labels to apply to the kubernetes resources. These are opinionated labels, you can add more labels using the variable `additional_k8s_labels`. If you want to remove a label, you can override it with an empty map(string). | `map(string)` | <pre>{<br>  "managed-by": "terraform",<br>  "scope": "gitlab-agent"<br>}</pre> | no |
+| <a name="input_k8s_default_labels"></a> [k8s\_default\_labels](#input\_k8s\_default\_labels) | Labels to apply to the kubernetes resources. These are opinionated labels, you can add more labels using the variable `additional_k8s_labels`. If you want to remove a label, you can override it with an empty map(string). | `map(string)` | <pre>{<br/>  "managed-by": "terraform",<br/>  "scope": "gitlab-agent"<br/>}</pre> | no |
 | <a name="input_k8s_gitlab_agent_token_secret_name"></a> [k8s\_gitlab\_agent\_token\_secret\_name](#input\_k8s\_gitlab\_agent\_token\_secret\_name) | The name of the Kubernetes secret that will store the Gitlab Agent token. You can use the placeholder `{{gitlab_agent_name}}` to reference the Gitlab Agent name. | `string` | `"{{gitlab_agent_name}}-token"` | no |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | The namespace in which the Gitlab Agent resources will be created. | `string` | `"gitlab-agent"` | no |
 
@@ -92,11 +92,13 @@ provider "gitlab" {
 | [gitlab_cluster_agent.this](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/cluster_agent) | resource |
 | [gitlab_cluster_agent_token.this](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/cluster_agent_token) | resource |
 | [gitlab_group_variable.this](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/group_variable) | resource |
+| [gitlab_project.project](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project) | resource |
 | [gitlab_repository_file.this](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/repository_file) | resource |
 | [helm_release.this](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubernetes_namespace_v1.this](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace_v1) | resource |
 | [kubernetes_secret_v1.gitlab_agent_token_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
 | [gitlab_group.root_namespace](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
+| [gitlab_metadata.this](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/metadata) | data source |
 | [gitlab_project.this](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/project) | data source |
 | [kubernetes_namespace_v1.this](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/data-sources/namespace_v1) | data source |
 
