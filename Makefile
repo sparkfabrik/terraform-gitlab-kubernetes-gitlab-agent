@@ -1,4 +1,4 @@
-TERRAFORM_DOCS_IMAGE_TAG ?= 0.19.0
+TERRAFORM_DOCS_IMAGE_TAG ?= 0.20.0
 
 .PHONY: lint tfscan generate-docs
 
