@@ -3,6 +3,11 @@ variable "gitlab_project_name" {
   type        = string
   default     = ""
 }
+variable "gitlab_agent_enabled_deploy" {
+  description = "Whether to deploy the GitLab Agent components. If false, only creates the GitLab Agent token, Kubernetes namespace and secret without deploying the agent itself."
+  type        = bool
+  default     = true
+}
 
 variable "gitlab_project_path_with_namespace" {
   description = "The path with namespace of the Gitlab project that hosts the Gitlab Agent configuration. The project must be created in Gitlab before running this module. The configured Gitlab provider must have write access to the project."
