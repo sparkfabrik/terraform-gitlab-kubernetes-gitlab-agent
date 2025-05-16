@@ -3,7 +3,7 @@ variable "gitlab_project_name" {
   type        = string
   default     = ""
 }
-variable "gitlab_agent_enabled_deploy" {
+variable "gitlab_agent_deploy_enabled" {
   description = "Whether to deploy the GitLab Agent components. If false, only creates the GitLab Agent token, Kubernetes namespace and secret without deploying the agent itself."
   type        = bool
   default     = true

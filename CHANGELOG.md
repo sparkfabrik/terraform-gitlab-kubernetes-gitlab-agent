@@ -14,7 +14,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-- Add the `gitlab_agent_enabled_deploy` variable to control whether to deploy the GitLab Agent components. When set to false, the module only creates the GitLab Agent token, Kubernetes namespace and secret without deploying the agent itself.
+- Add the `gitlab_agent_deploy_enabled` variable to control whether to deploy the GitLab Agent components. When set to false, the module only creates the GitLab Agent token, Kubernetes namespace and secret without deploying the agent itself.
 - Upgrade terraform docs docker image using renovate.
 
 ## [0.9.0] - 2024-11-13

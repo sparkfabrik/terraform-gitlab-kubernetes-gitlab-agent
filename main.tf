@@ -129,7 +129,7 @@ resource "kubernetes_secret_v1" "gitlab_agent_token_secret" {
 
 # Helm release
 resource "helm_release" "this" {
-  count            = var.gitlab_agent_enabled_deploy ? 1 : 0
+  count            = var.gitlab_agent_deploy_enabled ? 1 : 0
   name             = var.helm_release_name
   repository       = local.helm_chart_url
   chart            = local.helm_chart_name
