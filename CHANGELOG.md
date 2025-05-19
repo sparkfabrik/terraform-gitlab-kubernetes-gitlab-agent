@@ -8,14 +8,29 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-## [0.10.0] - 2025-05-16
+## [0.12.0] - 2025-05-19
 
-[Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/0.9.0...0.10.0)
+[Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/0.11.0...0.12.0)
 
 ### Added
 
 - Add the `gitlab_agent_deploy_enabled` variable to control whether to deploy the GitLab Agent components. When set to false, the module only creates the GitLab Agent token, Kubernetes namespace and secret without deploying the agent itself.
-- Upgrade terraform docs docker image using renovate.
+
+## [0.11.0] - 2025-04-15
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/0.10.0...0.11.0)
+
+### Changed
+
+- Upgrade the default Helm chart to version `2.13.0`.
+
+## [0.10.0] - 2025-04-13
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/0.9.0...0.10.0)
+
+### Changed
+
+- Upgrade version gitlab-agent Helm chart to `2.11.0`.
 
 ## [0.9.0] - 2024-11-13
 
