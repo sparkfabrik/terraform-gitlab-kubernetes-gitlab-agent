@@ -31,10 +31,22 @@ variable "gitlab_agent_token_description" {
   default     = "Token for the Gitlab Agent {{gitlab_agent_name}}."
 }
 
-variable "gitlab_agent_grant_access_to_entire_root_namespace" {
-  description = "Grant access to the entire root namespace. If false, you can provide a custom configuration file content using the variable `gitlab_agent_custom_config_file_content`. Otherwise, you will have to manually manage the access to the Gitlab Agent committing the proper configuration to the Gitlab project."
+variable "operate_at_root_group_level" {
+  description = "Operate at root group level. If true, grants access to entire root namespace and creates variables in root group. If false, behavior depends on groups_enabled and projects_enabled. This replaces gitlab_agent_grant_access_to_entire_root_namespace and gitlab_agent_create_variables_in_root_namespace."
   type        = bool
   default     = true
+}
+
+variable "groups_enabled" {
+  description = "List of group paths where the GitLab Agent should be enabled. Only used when operate_at_root_group_level is false. If empty and projects_enabled is also empty, the parent group of the agent project will be used automatically."
+  type        = list(string)
+  default     = []
+}
+
+variable "projects_enabled" {
+  description = "List of project paths (with namespace) where the GitLab Agent should be enabled. Only used when operate_at_root_group_level is false. If empty and groups_enabled is also empty, the parent group of the agent project will be used automatically."
+  type        = list(string)
+  default     = []
 }
 
 variable "gitlab_agent_grant_user_access_to_root_namespace" {
@@ -69,9 +81,9 @@ variable "gitlab_agent_branch_name" {
 }
 
 variable "gitlab_agent_create_variables_in_root_namespace" {
-  description = "Create two Gitlab CI/CD variables in the root namespace useful to configure the Kubernetes context and use the Gitlab Agent. These variables are created in the root namespace of the project defined in `gitlab_project_path_with_namespace`, which is the project that hosts the Gitlab Agent configuration."
+  description = "DEPRECATED: Use operate_at_root_group_level instead. Create two Gitlab CI/CD variables in the root namespace useful to configure the Kubernetes context and use the Gitlab Agent. These variables are created in the root namespace of the project defined in `gitlab_project_path_with_namespace`, which is the project that hosts the Gitlab Agent configuration."
   type        = bool
-  default     = true
+  default     = null
 }
 
 variable "gitlab_agent_variable_name_agent_id" {
