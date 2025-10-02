@@ -80,9 +80,9 @@ provider "gitlab" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_gitlab"></a> [gitlab](#provider\_gitlab) | >= 15.7 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | >= 2.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.23 |
+| <a name="provider_gitlab"></a> [gitlab](#provider\_gitlab) | 18.4.1 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | 3.0.2 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.38.0 |
 
 ## Requirements
 
@@ -103,11 +103,8 @@ provider "gitlab" {
 | <a name="input_gitlab_agent_append_to_config_file"></a> [gitlab\_agent\_append\_to\_config\_file](#input\_gitlab\_agent\_append\_to\_config\_file) | Append the Gitlab Agent configuration to the configuration file created for the entire root namespace. This variable is only used when `gitlab_agent_grant_access_to_entire_root_namespace` is true. | `string` | `""` | no |
 | <a name="input_gitlab_agent_branch_name"></a> [gitlab\_agent\_branch\_name](#input\_gitlab\_agent\_branch\_name) | The branch name where the Gitlab Agent configuration will be stored. | `string` | `"main"` | no |
 | <a name="input_gitlab_agent_commmit_message"></a> [gitlab\_agent\_commmit\_message](#input\_gitlab\_agent\_commmit\_message) | The commit message to use when committing the Gitlab Agent configuration file. You can use the placeholder `{{gitlab_agent_name}}` to reference the Gitlab Agent name. | `string` | `"[CI] Add agent config file for {{gitlab_agent_name}}"` | no |
-| <a name="input_gitlab_agent_create_variables_in_root_namespace"></a> [gitlab\_agent\_create\_variables\_in\_root\_namespace](#input\_gitlab\_agent\_create\_variables\_in\_root\_namespace) | Create two Gitlab CI/CD variables in the root namespace useful to configure the Kubernetes context and use the Gitlab Agent. These variables are created in the root namespace of the project defined in `gitlab_project_path_with_namespace`, which is the project that hosts the Gitlab Agent configuration. | `bool` | `true` | no |
 | <a name="input_gitlab_agent_custom_config_file_content"></a> [gitlab\_agent\_custom\_config\_file\_content](#input\_gitlab\_agent\_custom\_config\_file\_content) | The content of the Gitlab Agent configuration file. If not provided and `gitlab_agent_grant_access_to_entire_root_namespace` is true, the default configuration file will be used and the root namespace will be granted access to the Gitlab Agent. If you set this variable, it takes precedence over `gitlab_agent_grant_access_to_entire_root_namespace`. | `string` | `""` | no |
 | <a name="input_gitlab_agent_deploy_enabled"></a> [gitlab\_agent\_deploy\_enabled](#input\_gitlab\_agent\_deploy\_enabled) | Whether to deploy the GitLab Agent components. If false, only creates the GitLab Agent token, Kubernetes namespace and secret without deploying the agent itself. | `bool` | `true` | no |
-| <a name="input_gitlab_agent_grant_access_to_entire_root_namespace"></a> [gitlab\_agent\_grant\_access\_to\_entire\_root\_namespace](#input\_gitlab\_agent\_grant\_access\_to\_entire\_root\_namespace) | Grant access to the entire root namespace. If false, you can provide a custom configuration file content using the variable `gitlab_agent_custom_config_file_content`. Otherwise, you will have to manually manage the access to the Gitlab Agent committing the proper configuration to the Gitlab project. | `bool` | `true` | no |
-| <a name="input_gitlab_agent_grant_user_access_to_root_namespace"></a> [gitlab\_agent\_grant\_user\_access\_to\_root\_namespace](#input\_gitlab\_agent\_grant\_user\_access\_to\_root\_namespace) | Grant `user_access` to the root namespace. | `bool` | `false` | no |
 | <a name="input_gitlab_agent_name"></a> [gitlab\_agent\_name](#input\_gitlab\_agent\_name) | The name of the Gitlab Agent. | `string` | n/a | yes |
 | <a name="input_gitlab_agent_token_description"></a> [gitlab\_agent\_token\_description](#input\_gitlab\_agent\_token\_description) | The description of the Gitlab Agent token. You can use the placeholder `{{gitlab_agent_name}}` to reference the Gitlab Agent name. | `string` | `"Token for the Gitlab Agent {{gitlab_agent_name}}."` | no |
 | <a name="input_gitlab_agent_token_name"></a> [gitlab\_agent\_token\_name](#input\_gitlab\_agent\_token\_name) | The name of the Gitlab Agent token.  You can use the placeholder `{{gitlab_agent_name}}` to reference the Gitlab Agent name. | `string` | `"{{gitlab_agent_name}}-token"` | no |
@@ -115,13 +112,16 @@ provider "gitlab" {
 | <a name="input_gitlab_agent_variable_name_agent_project"></a> [gitlab\_agent\_variable\_name\_agent\_project](#input\_gitlab\_agent\_variable\_name\_agent\_project) | The name of the Gitlab CI/CD variable that stores the Gitlab Agent project path. | `string` | `"GITLAB_AGENT_PROJECT"` | no |
 | <a name="input_gitlab_project_name"></a> [gitlab\_project\_name](#input\_gitlab\_project\_name) | The name of the Gitlab project that hosts the Gitlab Agent configuration. If not provided, the module will use the project defined in `gitlab_project_path_with_namespace`. | `string` | `""` | no |
 | <a name="input_gitlab_project_path_with_namespace"></a> [gitlab\_project\_path\_with\_namespace](#input\_gitlab\_project\_path\_with\_namespace) | The path with namespace of the Gitlab project that hosts the Gitlab Agent configuration. The project must be created in Gitlab before running this module. The configured Gitlab provider must have write access to the project. | `string` | n/a | yes |
+| <a name="input_groups_enabled"></a> [groups\_enabled](#input\_groups\_enabled) | List of group paths where the GitLab Agent should be enabled. Only used when operate\_at\_root\_group\_level is false. If empty and projects\_enabled is also empty, the parent group of the agent project will be used automatically. | `list(string)` | `[]` | no |
 | <a name="input_helm_additional_values"></a> [helm\_additional\_values](#input\_helm\_additional\_values) | Additional values to be passed to the Helm chart. | `list(string)` | `[]` | no |
-| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | The version of the gitlab-agent Helm chart. You can see the available versions at https://gitlab.com/gitlab-org/charts/gitlab-agent/-/tags, or using the command `helm search repo gitlab/gitlab-agent -l` after adding the Gitlab Helm repository. | `string` | `"2.13.0"` | no |
+| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | The version of the gitlab-agent Helm chart. You can see the available versions at https://gitlab.com/gitlab-org/charts/gitlab-agent/-/tags, or using the command `helm search repo gitlab/gitlab-agent -l` after adding the Gitlab Helm repository. | `string` | `"2.14.1"` | no |
 | <a name="input_helm_release_name"></a> [helm\_release\_name](#input\_helm\_release\_name) | The name of the Helm release. | `string` | `"gitlab-agent"` | no |
 | <a name="input_k8s_additional_labels"></a> [k8s\_additional\_labels](#input\_k8s\_additional\_labels) | Additional labels to apply to the kubernetes resources. | `map(string)` | `{}` | no |
 | <a name="input_k8s_default_labels"></a> [k8s\_default\_labels](#input\_k8s\_default\_labels) | Labels to apply to the kubernetes resources. These are opinionated labels, you can add more labels using the variable `additional_k8s_labels`. If you want to remove a label, you can override it with an empty map(string). | `map(string)` | <pre>{<br/>  "managed-by": "terraform",<br/>  "scope": "gitlab-agent"<br/>}</pre> | no |
 | <a name="input_k8s_gitlab_agent_token_secret_name"></a> [k8s\_gitlab\_agent\_token\_secret\_name](#input\_k8s\_gitlab\_agent\_token\_secret\_name) | The name of the Kubernetes secret that will store the Gitlab Agent token. You can use the placeholder `{{gitlab_agent_name}}` to reference the Gitlab Agent name. | `string` | `"{{gitlab_agent_name}}-token"` | no |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | The namespace in which the Gitlab Agent resources will be created. | `string` | `"gitlab-agent"` | no |
+| <a name="input_operate_at_root_group_level"></a> [operate\_at\_root\_group\_level](#input\_operate\_at\_root\_group\_level) | Operate at root group level. If true, grants access to entire root namespace and creates variables in root group. If false, behavior depends on groups\_enabled and projects\_enabled. This replaces gitlab\_agent\_grant\_access\_to\_entire\_root\_namespace and gitlab\_agent\_create\_variables\_in\_root\_namespace. | `bool` | `true` | no |
+| <a name="input_projects_enabled"></a> [projects\_enabled](#input\_projects\_enabled) | List of project paths (with namespace) where the GitLab Agent should be enabled. Only used when operate\_at\_root\_group\_level is false. If empty and groups\_enabled is also empty, the parent group of the agent project will be used automatically. | `list(string)` | `[]` | no |
 
 ## Outputs
 
@@ -130,7 +130,10 @@ provider "gitlab" {
 | <a name="output_gitlab_agent_kubernetes_context_variables"></a> [gitlab\_agent\_kubernetes\_context\_variables](#output\_gitlab\_agent\_kubernetes\_context\_variables) | The Gitlab Agent information to be used to configure the Kubernetes context. |
 | <a name="output_gitlab_agent_token"></a> [gitlab\_agent\_token](#output\_gitlab\_agent\_token) | The token of the Gitlab Agent. |
 | <a name="output_gitlab_agents_project_id"></a> [gitlab\_agents\_project\_id](#output\_gitlab\_agents\_project\_id) | The ID of the Gitlab project where the Gitlab Agents are installed. |
-| <a name="output_gitlab_root_namespace_id"></a> [gitlab\_root\_namespace\_id](#output\_gitlab\_root\_namespace\_id) | The ID of the root namespace of the Gitlab Agents project. |
+| <a name="output_gitlab_enabled_groups"></a> [gitlab\_enabled\_groups](#output\_gitlab\_enabled\_groups) | List of groups where the GitLab Agent has been enabled with variables. |
+| <a name="output_gitlab_enabled_projects"></a> [gitlab\_enabled\_projects](#output\_gitlab\_enabled\_projects) | List of projects where the GitLab Agent has been enabled with variables. |
+| <a name="output_gitlab_parent_group_auto_detected"></a> [gitlab\_parent\_group\_auto\_detected](#output\_gitlab\_parent\_group\_auto\_detected) | Whether the parent group was automatically detected. |
+| <a name="output_gitlab_root_namespace_id"></a> [gitlab\_root\_namespace\_id](#output\_gitlab\_root\_namespace\_id) | The ID of the root namespace of the Gitlab Agents project. Only available when operate\_at\_root\_group\_level is true. |
 | <a name="output_k8s_common_labels"></a> [k8s\_common\_labels](#output\_k8s\_common\_labels) | Common labels to apply to the kubernetes resources. |
 | <a name="output_k8s_gitlab_agent_token_secret_name"></a> [k8s\_gitlab\_agent\_token\_secret\_name](#output\_k8s\_gitlab\_agent\_token\_secret\_name) | The name of the Kubernetes secret that will store the Gitlab Agent token. |
 
@@ -140,14 +143,19 @@ provider "gitlab" {
 |------|------|
 | [gitlab_cluster_agent.this](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/cluster_agent) | resource |
 | [gitlab_cluster_agent_token.this](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/cluster_agent_token) | resource |
-| [gitlab_group_variable.this](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/group_variable) | resource |
+| [gitlab_group_variable.enabled_groups](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/group_variable) | resource |
+| [gitlab_group_variable.root_namespace](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/group_variable) | resource |
 | [gitlab_project.project](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project) | resource |
+| [gitlab_project_variable.enabled_projects](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project_variable) | resource |
 | [gitlab_repository_file.this](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/repository_file) | resource |
 | [helm_release.this](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubernetes_namespace_v1.this](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace_v1) | resource |
 | [kubernetes_secret_v1.gitlab_agent_token_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
+| [gitlab_group.enabled_groups](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
+| [gitlab_group.parent_group](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
 | [gitlab_group.root_namespace](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/group) | data source |
 | [gitlab_metadata.this](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/metadata) | data source |
+| [gitlab_project.enabled_projects](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/project) | data source |
 | [gitlab_project.this](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/data-sources/project) | data source |
 | [kubernetes_namespace_v1.this](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/data-sources/namespace_v1) | data source |
 

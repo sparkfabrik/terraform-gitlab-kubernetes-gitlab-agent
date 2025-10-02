@@ -23,11 +23,24 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Agent configuration file is now dynamically generated based on `operate_at_root_group_level` and enabled groups/projects
 - CI/CD variables can now be created in multiple targets (root group, specific groups, or specific projects) depending on configuration
 - Output `gitlab_root_namespace_id` now returns `null` when not operating at root group level
+- User access (`user_access`) is now controlled directly by `operate_at_root_group_level` and only granted when operating at root group level
 
-### Deprecated
+### Removed
 
-- Variable `gitlab_agent_grant_access_to_entire_root_namespace` - use `operate_at_root_group_level` instead
-- Variable `gitlab_agent_create_variables_in_root_namespace` - behavior is now determined by `operate_at_root_group_level`
+- **BREAKING CHANGE**: Variable `gitlab_agent_grant_user_access_to_root_namespace` - functionality is now controlled by `operate_at_root_group_level`
+- **BREAKING CHANGE**: Variable `gitlab_agent_grant_access_to_entire_root_namespace` - replaced by `operate_at_root_group_level`
+- **BREAKING CHANGE**: Variable `gitlab_agent_create_variables_in_root_namespace` - behavior is now determined by `operate_at_root_group_level`
+- Backward compatibility logic for deprecated variables
+
+### Migration Guide
+
+If you were using the removed variables, migrate as follows:
+
+- `gitlab_agent_grant_user_access_to_root_namespace = true` → `operate_at_root_group_level = true`
+- `gitlab_agent_grant_access_to_entire_root_namespace = true` + `gitlab_agent_create_variables_in_root_namespace = true` → `operate_at_root_group_level = true`
+- `gitlab_agent_grant_access_to_entire_root_namespace = false` → `operate_at_root_group_level = false` + configure `groups_enabled` and/or `projects_enabled`
+
+**Note**: User access is now only available when `operate_at_root_group_level = true`. If you need user access to specific groups/projects, this is not currently supported.
 
 ## [0.12.0] - 2025-05-19
 

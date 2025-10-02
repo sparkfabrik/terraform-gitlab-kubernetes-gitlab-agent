@@ -26,7 +26,7 @@ output "gitlab_agents_project_id" {
 
 output "gitlab_root_namespace_id" {
   description = "The ID of the root namespace of the Gitlab Agents project. Only available when operate_at_root_group_level is true."
-  value       = local.operate_at_root_group_level_computed ? data.gitlab_group.root_namespace.group_id : null
+  value       = var.operate_at_root_group_level ? data.gitlab_group.root_namespace.group_id : null
 }
 
 output "gitlab_enabled_groups" {
@@ -44,7 +44,3 @@ output "gitlab_parent_group_auto_detected" {
   value       = local.auto_detect_parent
 }
 
-output "operate_at_root_group_level" {
-  description = "The computed value of operate_at_root_group_level (includes backward compatibility)."
-  value       = local.operate_at_root_group_level_computed
-}
