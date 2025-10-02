@@ -24,19 +24,19 @@ locals {
     var.gitlab_agent_grant_user_access_to_root_namespace != null ? var.gitlab_agent_grant_user_access_to_root_namespace : true
   )
 
-  # Determina il parent group del progetto
+  # Determine the parent group of the project
   project_path_parts = split("/", var.gitlab_project_path_with_namespace)
   parent_group_path  = length(local.project_path_parts) > 1 ? join("/", slice(local.project_path_parts, 0, length(local.project_path_parts) - 1)) : local.project_root_namespace
 
-  # Determina se siamo in modalità auto-parent
+  # Determine if we are in auto-parent mode
   auto_detect_parent = !local.operate_at_root_group_level_computed && length(concat(var.groups_enabled, var.projects_enabled)) == 0
 
-  # Lista finale di gruppi da abilitare
+  # Final list of groups to enable
   groups_to_enable = local.operate_at_root_group_level_computed ? [local.project_root_namespace] : (
     local.auto_detect_parent ? [local.parent_group_path] : var.groups_enabled
   )
 
-  # Lista finale di progetti da abilitare
+  # Final list of projects to enable
   projects_to_enable = local.operate_at_root_group_level_computed ? [] : (
     local.auto_detect_parent ? [] : var.projects_enabled
   )
@@ -80,19 +80,19 @@ data "gitlab_group" "root_namespace" {
   full_path = local.project_root_namespace
 }
 
-# Data source per parent group quando auto-detect
+# Parent group data source parent group if auto-detect
 data "gitlab_group" "parent_group" {
   count     = local.auto_detect_parent ? 1 : 0
   full_path = local.parent_group_path
 }
 
-# Data source per i gruppi specificati
+# Data source for the specified groups
 data "gitlab_group" "enabled_groups" {
   for_each  = !local.operate_at_root_group_level_computed && !local.auto_detect_parent ? toset(var.groups_enabled) : toset([])
   full_path = each.value
 }
 
-# Data source per i progetti specificati
+# Data source for the specified projects
 data "gitlab_project" "enabled_projects" {
   for_each            = !local.operate_at_root_group_level_computed && !local.auto_detect_parent ? toset(var.projects_enabled) : toset([])
   path_with_namespace = each.value
