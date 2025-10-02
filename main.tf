@@ -86,7 +86,7 @@ data "gitlab_project" "enabled_projects" {
 resource "gitlab_project" "project" {
   count        = local.use_existing_project == 0 ? 1 : 0
   name         = var.gitlab_project_name
-  namespace_id = data.gitlab_group.root_namespace.group_id
+  namespace_id = var.operate_at_root_group_level ? data.gitlab_group.root_namespace.group_id : data.gitlab_group.parent_group[0].group_id
 }
 
 resource "gitlab_cluster_agent" "this" {
