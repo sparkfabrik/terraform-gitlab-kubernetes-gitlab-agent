@@ -50,7 +50,7 @@ variable "projects_enabled" {
 }
 
 variable "gitlab_agent_grant_user_access_to_root_namespace" {
-  description = "DEPRECATED: Use operate_at_root_group_level instead.Grant `user_access` to the root namespace."
+  description = "DEPRECATED: Use operate_at_root_group_level instead. Grant `user_access` to the root namespace."
   type        = bool
   default     = false
 }
