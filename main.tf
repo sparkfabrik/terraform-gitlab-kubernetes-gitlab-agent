@@ -135,7 +135,7 @@ resource "gitlab_repository_file" "this" {
   ]
 }
 
-# Variabili per root group (quando operate_at_root_group_level è true)
+# Variables for root group (when operate_at_root_group_level is true)
 resource "gitlab_group_variable" "root_namespace" {
   for_each = local.operate_at_root_group_level_computed ? local.gitlab_agent_kubernetes_context_variables : {}
 
