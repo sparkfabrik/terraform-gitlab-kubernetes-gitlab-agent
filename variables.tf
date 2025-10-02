@@ -37,6 +37,12 @@ variable "operate_at_root_group_level" {
   default     = true
 }
 
+variable "gitlab_agent_grant_user_access_to_root_namespace" {
+  description = "Grant `user_access` to the root namespace."
+  type        = bool
+  default     = false
+}
+
 variable "groups_enabled" {
   description = "List of group paths where the GitLab Agent should be enabled. Only used when operate_at_root_group_level is false. If empty and projects_enabled is also empty, the parent group of the agent project will be used automatically."
   type        = list(string)
@@ -50,14 +56,14 @@ variable "projects_enabled" {
 }
 
 variable "gitlab_agent_append_to_config_file" {
-  description = "Append the Gitlab Agent configuration to the configuration file created for the entire root namespace. This variable is only used when `gitlab_agent_grant_access_to_entire_root_namespace` is true."
+  description = "Append custom configuration to the Gitlab Agent configuration file. This content will be added at the end of the generated configuration."
   type        = string
   default     = ""
 
 }
 
 variable "gitlab_agent_custom_config_file_content" {
-  description = "The content of the Gitlab Agent configuration file. If not provided and `gitlab_agent_grant_access_to_entire_root_namespace` is true, the default configuration file will be used and the root namespace will be granted access to the Gitlab Agent. If you set this variable, it takes precedence over `gitlab_agent_grant_access_to_entire_root_namespace`."
+  description = "The content of the Gitlab Agent configuration file. If not provided, the default configuration file will be generated based on `operate_at_root_group_level`, `groups_enabled`, and `projects_enabled`. If you set this variable, it takes precedence over the automatic configuration generation."
   type        = string
   default     = ""
 }

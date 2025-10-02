@@ -37,24 +37,14 @@ locals {
   )
 
   # Gitlab Agent configuration file
-  final_configuration_file_content = var.gitlab_agent_custom_config_file_content != "" ? var.gitlab_agent_custom_config_file_content : (
-    var.operate_at_root_group_level ? templatefile("${path.module}/files/config.yaml.tftpl", {
-      root_namespace                     = data.gitlab_group.root_namespace.path,
-      gitlab_agent_append_to_config_file = var.gitlab_agent_append_to_config_file,
-      operate_at_root_group_level        = var.operate_at_root_group_level
-      }) : (
-      length(local.groups_to_enable) > 0 || length(local.projects_to_enable) > 0 ? yamlencode({
-        ci_access = merge(
-          length(local.groups_to_enable) > 0 ? {
-            groups = [for g in local.groups_to_enable : { id = g }]
-          } : {},
-          length(local.projects_to_enable) > 0 ? {
-            projects = [for p in local.projects_to_enable : { id = p }]
-          } : {}
-        )
-      }) : ""
-    )
-  )
+  final_configuration_file_content = var.gitlab_agent_custom_config_file_content != "" ? var.gitlab_agent_custom_config_file_content : templatefile("${path.module}/files/config.yaml.tftpl", {
+    operate_at_root_group_level                      = var.operate_at_root_group_level
+    root_namespace                                   = data.gitlab_group.root_namespace.path
+    groups_to_enable                                 = local.groups_to_enable
+    projects_to_enable                               = local.projects_to_enable
+    gitlab_agent_append_to_config_file               = var.gitlab_agent_append_to_config_file
+    gitlab_agent_grant_user_access_to_root_namespace = var.gitlab_agent_grant_user_access_to_root_namespace
+  })
 
   # Gitlab Agent CI/CD variables
   gitlab_agent_kubernetes_context_variables = {

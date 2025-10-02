@@ -10,41 +10,39 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.0.0] - 2025-10-02
 
-[Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/1.0.0...0.13.0)
+[Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/0.13.0...1.0.0)
 
 ### Added
 
-- New variable `operate_at_root_group_level` to simplify configuration and replace the combination of `gitlab_agent_grant_access_to_entire_root_namespace` and `gitlab_agent_create_variables_in_root_namespace`
-- New variable `groups_enabled` to specify groups where the GitLab Agent should be enabled (when not operating at root group level)
-- New variable `projects_enabled` to specify projects where the GitLab Agent should be enabled (when not operating at root group level)
-- Auto-detection of parent group when `operate_at_root_group_level = false` and no groups/projects are specified
-- Support for creating CI/CD variables in multiple groups and projects simultaneously
-- Dynamic generation of agent configuration file based on enabled groups/projects using `yamlencode()`
-- New outputs: `gitlab_enabled_groups`, `gitlab_enabled_projects`, `gitlab_parent_group_auto_detected`, `operate_at_root_group_level`
+- New variable `operate_at_root_group_level` to simplify configuration and replace the combination of `gitlab_agent_grant_access_to_entire_root_namespace` and `gitlab_agent_create_variables_in_root_namespace`.
+- New variable `groups_enabled` to specify groups where the GitLab Agent should be enabled (when not operating at root group level).
+- New variable `projects_enabled` to specify projects where the GitLab Agent should be enabled (when not operating at root group level).
+- Auto-detection of parent group when `operate_at_root_group_level = false` and no groups/projects are specified.
+- Support for creating CI/CD variables in multiple groups and projects simultaneously.
+- Dynamic generation of agent configuration file based on enabled groups/projects using `yamlencode()`.
+- New outputs: `gitlab_enabled_groups`, `gitlab_enabled_projects`, `gitlab_parent_group_auto_detected`.
 
 ### Changed
 
-- Agent configuration file is now dynamically generated based on `operate_at_root_group_level` and enabled groups/projects
-- CI/CD variables can now be created in multiple targets (root group, specific groups, or specific projects) depending on configuration
-- Output `gitlab_root_namespace_id` now returns `null` when not operating at root group level
-- User access (`user_access`) is now controlled directly by `operate_at_root_group_level` and only granted when operating at root group level
+- Agent configuration file is now dynamically generated based on `operate_at_root_group_level` and enabled groups/projects.
+- CI/CD variables can now be created in multiple targets (root group, specific groups, or specific projects) depending on configuration.
+- Output `gitlab_root_namespace_id` now returns `null` when not operating at root group level.
 
 ### Removed
 
-- **BREAKING CHANGE**: Variable `gitlab_agent_grant_user_access_to_root_namespace` - functionality is now controlled by `operate_at_root_group_level`
-- **BREAKING CHANGE**: Variable `gitlab_agent_grant_access_to_entire_root_namespace` - replaced by `operate_at_root_group_level`
-- **BREAKING CHANGE**: Variable `gitlab_agent_create_variables_in_root_namespace` - behavior is now determined by `operate_at_root_group_level`
-- Backward compatibility logic for deprecated variables
+- **BREAKING CHANGE**: variable `gitlab_agent_grant_access_to_entire_root_namespace` - replaced by `operate_at_root_group_level`.
+- **BREAKING CHANGE**: variable `gitlab_agent_create_variables_in_root_namespace` - behavior is now determined by `operate_at_root_group_level`.
+- Backward compatibility logic for deprecated variables.
 
 ### Migration Guide
 
 If you were using the removed variables, migrate as follows:
 
-- `gitlab_agent_grant_user_access_to_root_namespace = true` → `operate_at_root_group_level = true`
-- `gitlab_agent_grant_access_to_entire_root_namespace = true` + `gitlab_agent_create_variables_in_root_namespace = true` → `operate_at_root_group_level = true`
-- `gitlab_agent_grant_access_to_entire_root_namespace = false` → `operate_at_root_group_level = false` + configure `groups_enabled` and/or `projects_enabled`
+- `gitlab_agent_grant_user_access_to_root_namespace = true` -> `operate_at_root_group_level = true` + `gitlab_agent_grant_user_access_to_root_namespace = true`
+- `gitlab_agent_grant_access_to_entire_root_namespace = true` + `gitlab_agent_create_variables_in_root_namespace = true` → `operate_at_root_group_level = true` + `gitlab_agent_grant_user_access_to_root_namespace = true`
+- `gitlab_agent_grant_access_to_entire_root_namespace = false` -> `operate_at_root_group_level = false` + configure `groups_enabled` and/or `projects_enabled`
 
-**Note**: User access is now only available when `operate_at_root_group_level = true`. If you need user access to specific groups/projects, this is not currently supported.
+**Note**: user access is now only available when `operate_at_root_group_level = true`. If you need user access to specific groups/projects, this is not currently supported by Gitlab.
 
 ## [0.12.0] - 2025-05-19
 

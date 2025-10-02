@@ -6,9 +6,9 @@ It uses the Gitlab provider to register the agent on the Gitlab server. The gene
 
 The module supports multiple configuration modes:
 
-- **Root Group Level** (default): The agent has access to the entire root namespace and CI/CD variables are created in the root group
-- **Auto-detect Parent**: When not operating at root level and no specific groups/projects are provided, the module automatically detects the parent group of the agent project
-- **Specific Groups/Projects**: Enable the agent only for specific groups or projects, with variables created in those locations
+- **Root Group Level** (default): The agent has access to the entire root namespace and CI/CD variables are created in the root group.
+- **Auto-detect Parent**: when not operating at root level and no specific groups/projects are provided, the module automatically detects the parent group of the agent project.
+- **Specific Groups/Projects**: enable the agent only for specific groups or projects, with variables created in those locations.
 
 **ATTENTION**: you have to manually create the project that will host the Gitlab Agent configuration in Gitlab before running this module.
 
