@@ -12,21 +12,21 @@ user_access:
 %{~ else ~}
 %{~ if length(groups_to_enable) > 0 || length(projects_to_enable) > 0 ~}
 ci_access:
-%{~ if length(groups_to_enable) > 0 ~}
+  %{~ if length(groups_to_enable) > 0 ~}
   groups:
-%{~ for group in groups_to_enable ~}
+    %{~ for group in groups_to_enable ~}
     - id: ${group}
-%{~ endfor ~}
-%{~ endif ~}
-%{~ if length(projects_to_enable) > 0 ~}
+    %{~ endfor ~}
+  %{~ endif ~}
+  %{~ if length(projects_to_enable) > 0 ~}
   projects:
-%{~ for project in projects_to_enable ~}
+    %{~ for project in projects_to_enable ~}
     - id: ${project}
-%{~ endfor ~}
-%{~ endif ~}
+    %{~ endfor ~}
+  %{~ endif ~}
 %{~ endif ~}
 %{~ endif ~}
 
-%{~ if trimspace(gitlab_agent_append_to_config_file) != "" ~}
+%{~ if trimspace(gitlab_agent_append_to_config_file) != "" }
 ${gitlab_agent_append_to_config_file}
 %{~ endif ~}
