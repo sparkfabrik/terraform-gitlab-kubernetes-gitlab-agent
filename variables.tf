@@ -80,12 +80,6 @@ variable "gitlab_agent_branch_name" {
   default     = "main"
 }
 
-variable "gitlab_agent_create_variables_in_root_namespace" {
-  description = "DEPRECATED: Use operate_at_root_group_level instead. Create two Gitlab CI/CD variables in the root namespace useful to configure the Kubernetes context and use the Gitlab Agent. These variables are created in the root namespace of the project defined in `gitlab_project_path_with_namespace`, which is the project that hosts the Gitlab Agent configuration."
-  type        = bool
-  default     = null
-}
-
 variable "gitlab_agent_variable_name_agent_id" {
   description = "The name of the Gitlab CI/CD variable that stores the Gitlab Agent ID."
   type        = string
