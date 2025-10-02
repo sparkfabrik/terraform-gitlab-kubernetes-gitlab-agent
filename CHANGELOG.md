@@ -8,6 +8,27 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- New variable `operate_at_root_group_level` to simplify configuration and replace the combination of `gitlab_agent_grant_access_to_entire_root_namespace` and `gitlab_agent_create_variables_in_root_namespace`
+- New variable `groups_enabled` to specify groups where the GitLab Agent should be enabled (when not operating at root group level)
+- New variable `projects_enabled` to specify projects where the GitLab Agent should be enabled (when not operating at root group level)
+- Auto-detection of parent group when `operate_at_root_group_level = false` and no groups/projects are specified
+- Support for creating CI/CD variables in multiple groups and projects simultaneously
+- Dynamic generation of agent configuration file based on enabled groups/projects using `yamlencode()`
+- New outputs: `gitlab_enabled_groups`, `gitlab_enabled_projects`, `gitlab_parent_group_auto_detected`, `operate_at_root_group_level`
+
+### Changed
+
+- Agent configuration file is now dynamically generated based on `operate_at_root_group_level` and enabled groups/projects
+- CI/CD variables can now be created in multiple targets (root group, specific groups, or specific projects) depending on configuration
+- Output `gitlab_root_namespace_id` now returns `null` when not operating at root group level
+
+### Deprecated
+
+- Variable `gitlab_agent_grant_access_to_entire_root_namespace` - use `operate_at_root_group_level` instead
+- Variable `gitlab_agent_create_variables_in_root_namespace` - behavior is now determined by `operate_at_root_group_level`
+
 ## [0.12.0] - 2025-05-19
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/0.11.0...0.12.0)

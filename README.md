@@ -4,11 +4,59 @@ This module creates all the necessary resources to deploy a Gitlab Agent on a Ku
 
 It uses the Gitlab provider to register the agent on the Gitlab server. The generated registration token is use to create an Helm release of the Gitlab Agent in the cluster.
 
-If required (`gitlab_agent_grant_access_to_entire_root_namespace` configured to `true`), it also creates the necessary configuration files in the given Gitlab project, granting access to all the projects in the root namespace and subgroups.
+The module supports multiple configuration modes:
+
+- **Root Group Level** (default): The agent has access to the entire root namespace and CI/CD variables are created in the root group
+- **Auto-detect Parent**: When not operating at root level and no specific groups/projects are provided, the module automatically detects the parent group of the agent project
+- **Specific Groups/Projects**: Enable the agent only for specific groups or projects, with variables created in those locations
 
 **ATTENTION**: you have to manually create the project that will host the Gitlab Agent configuration in Gitlab before running this module.
 
 From version `0.7.0`, if you set `gitlab_project_name` the module will create Gitlab project automatically. This new behavior requires the provider to have the proper permissions to create the project in the namespace.
+
+## Configuration Examples
+
+### Example 1: Root Group (Default)
+```hcl
+module "gitlab_agent" {
+  source = "github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent"
+
+  gitlab_project_path_with_namespace = "my-org/agents-project"
+  gitlab_agent_name                  = "production-agent"
+  namespace                          = "gitlab-agent"
+}
+```
+
+### Example 2: Auto-detect Parent Group
+```hcl
+module "gitlab_agent" {
+  source = "github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent"
+
+  gitlab_project_path_with_namespace = "my-org/team-a/subgroup/agents"
+  gitlab_agent_name                  = "team-agent"
+  namespace                          = "gitlab-agent"
+  
+  operate_at_root_group_level = false
+  # Parent group "my-org/team-a/subgroup" will be automatically detected
+}
+```
+
+### Example 3: Specific Groups
+```hcl
+module "gitlab_agent" {
+  source = "github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent"
+
+  gitlab_project_path_with_namespace = "my-org/infrastructure/agents"
+  gitlab_agent_name                  = "shared-agent"
+  namespace                          = "gitlab-agent"
+  
+  operate_at_root_group_level = false
+  groups_enabled = [
+    "my-org/team-a",
+    "my-org/team-b"
+  ]
+}
+```
 
 ## RBAC configuration for the Gitlab Agent service account
 
