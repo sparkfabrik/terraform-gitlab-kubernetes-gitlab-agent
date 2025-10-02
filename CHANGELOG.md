@@ -8,6 +8,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.0.0] - 2025-10-02
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/1.0.0...0.13.0)
+
 ### Added
 
 - New variable `operate_at_root_group_level` to simplify configuration and replace the combination of `gitlab_agent_grant_access_to_entire_root_namespace` and `gitlab_agent_create_variables_in_root_namespace`
