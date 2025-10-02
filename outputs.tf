@@ -25,6 +25,22 @@ output "gitlab_agents_project_id" {
 }
 
 output "gitlab_root_namespace_id" {
-  description = "The ID of the root namespace of the Gitlab Agents project."
-  value       = data.gitlab_group.root_namespace.group_id
+  description = "The ID of the root namespace of the Gitlab Agents project. Only available when operate_at_root_group_level is true."
+  value       = var.operate_at_root_group_level ? data.gitlab_group.root_namespace.group_id : null
 }
+
+output "gitlab_enabled_groups" {
+  description = "List of groups where the GitLab Agent has been enabled with variables."
+  value       = local.groups_to_enable
+}
+
+output "gitlab_enabled_projects" {
+  description = "List of projects where the GitLab Agent has been enabled with variables."
+  value       = local.projects_to_enable
+}
+
+output "gitlab_parent_group_auto_detected" {
+  description = "Whether the parent group was automatically detected."
+  value       = local.auto_detect_parent
+}
+

@@ -1,13 +1,30 @@
+%{~ if operate_at_root_group_level ~}
 ci_access:
   groups:
     - id: ${root_namespace}
-
 %{~ if gitlab_agent_grant_user_access_to_root_namespace }
 user_access:
   access_as:
     agent: {}
   groups:
     - id: ${root_namespace}
+%{~ endif ~}
+%{~ else ~}
+%{~ if length(groups_to_enable) > 0 || length(projects_to_enable) > 0 ~}
+ci_access:
+  %{~ if length(groups_to_enable) > 0 ~}
+  groups:
+    %{~ for group in groups_to_enable ~}
+    - id: ${group}
+    %{~ endfor ~}
+  %{~ endif ~}
+  %{~ if length(projects_to_enable) > 0 ~}
+  projects:
+    %{~ for project in projects_to_enable ~}
+    - id: ${project}
+    %{~ endfor ~}
+  %{~ endif ~}
+%{~ endif ~}
 %{~ endif ~}
 
 %{~ if trimspace(gitlab_agent_append_to_config_file) != "" }

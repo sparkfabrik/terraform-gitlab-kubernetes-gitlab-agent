@@ -19,8 +19,32 @@ locals {
   gitlab_agent_commmit_message_computed       = replace(var.gitlab_agent_commmit_message, "{{gitlab_agent_name}}", var.gitlab_agent_name)
   k8s_gitlab_agent_token_secret_name_computed = replace(var.k8s_gitlab_agent_token_secret_name, "{{gitlab_agent_name}}", var.gitlab_agent_name)
 
+  # Determine the parent group of the project
+  project_path_parts = split("/", var.gitlab_project_path_with_namespace)
+  parent_group_path  = length(local.project_path_parts) > 1 ? join("/", slice(local.project_path_parts, 0, length(local.project_path_parts) - 1)) : ""
+
+  # Determine if we are in auto-parent mode
+  auto_detect_parent = !var.operate_at_root_group_level && length(concat(var.groups_enabled, var.projects_enabled)) == 0
+
+  # Final list of groups to enable
+  groups_to_enable = var.operate_at_root_group_level ? [] : (
+    local.auto_detect_parent ? [local.parent_group_path] : var.groups_enabled
+  )
+
+  # Final list of projects to enable
+  projects_to_enable = var.operate_at_root_group_level ? [] : (
+    local.auto_detect_parent ? [] : var.projects_enabled
+  )
+
   # Gitlab Agent configuration file
-  final_configuration_file_content = var.gitlab_agent_custom_config_file_content != "" ? var.gitlab_agent_custom_config_file_content : (var.gitlab_agent_grant_access_to_entire_root_namespace ? templatefile("${path.module}/files/config.yaml.tftpl", { root_namespace = data.gitlab_group.root_namespace.path, gitlab_agent_append_to_config_file = var.gitlab_agent_append_to_config_file, gitlab_agent_grant_user_access_to_root_namespace = var.gitlab_agent_grant_user_access_to_root_namespace }) : "")
+  final_configuration_file_content = var.gitlab_agent_custom_config_file_content != "" ? var.gitlab_agent_custom_config_file_content : templatefile("${path.module}/files/config.yaml.tftpl", {
+    operate_at_root_group_level                      = var.operate_at_root_group_level
+    gitlab_agent_grant_user_access_to_root_namespace = var.gitlab_agent_grant_user_access_to_root_namespace
+    root_namespace                                   = data.gitlab_group.root_namespace.path
+    groups_to_enable                                 = local.groups_to_enable
+    projects_to_enable                               = local.projects_to_enable
+    gitlab_agent_append_to_config_file               = var.gitlab_agent_append_to_config_file
+  })
 
   # Gitlab Agent CI/CD variables
   gitlab_agent_kubernetes_context_variables = {
@@ -41,10 +65,28 @@ data "gitlab_group" "root_namespace" {
   full_path = local.project_root_namespace
 }
 
+# Data source for parent group when auto-detecting
+data "gitlab_group" "parent_group" {
+  count     = local.auto_detect_parent ? 1 : 0
+  full_path = local.parent_group_path
+}
+
+# Data source for the specified groups
+data "gitlab_group" "enabled_groups" {
+  for_each  = !var.operate_at_root_group_level && !local.auto_detect_parent ? toset(var.groups_enabled) : toset([])
+  full_path = each.value
+}
+
+# Data source for the specified projects
+data "gitlab_project" "enabled_projects" {
+  for_each            = !var.operate_at_root_group_level && !local.auto_detect_parent ? toset(var.projects_enabled) : toset([])
+  path_with_namespace = each.value
+}
+
 resource "gitlab_project" "project" {
   count        = local.use_existing_project == 0 ? 1 : 0
   name         = var.gitlab_project_name
-  namespace_id = data.gitlab_group.root_namespace.group_id
+  namespace_id = var.operate_at_root_group_level ? data.gitlab_group.root_namespace.group_id : data.gitlab_group.parent_group[0].group_id
 }
 
 resource "gitlab_cluster_agent" "this" {
@@ -78,8 +120,9 @@ resource "gitlab_repository_file" "this" {
   ]
 }
 
-resource "gitlab_group_variable" "this" {
-  for_each = var.gitlab_agent_create_variables_in_root_namespace ? local.gitlab_agent_kubernetes_context_variables : {}
+# Variables for root group (when operate_at_root_group_level is true)
+resource "gitlab_group_variable" "root_namespace" {
+  for_each = var.operate_at_root_group_level ? local.gitlab_agent_kubernetes_context_variables : {}
 
   group     = data.gitlab_group.root_namespace.group_id
   key       = each.key
@@ -92,6 +135,42 @@ resource "gitlab_group_variable" "this" {
   depends_on = [
     helm_release.this
   ]
+}
+
+# Variables for specific groups (when operate_at_root_group_level is false)
+resource "gitlab_group_variable" "enabled_groups" {
+  for_each = !var.operate_at_root_group_level && length(local.groups_to_enable) > 0 ? {
+    for pair in setproduct(keys(local.gitlab_agent_kubernetes_context_variables), local.groups_to_enable) :
+    "${pair[1]}__${pair[0]}" => {
+      group_path = pair[1]
+      key        = pair[0]
+      value      = local.gitlab_agent_kubernetes_context_variables[pair[0]]
+    }
+  } : {}
+
+  group     = local.auto_detect_parent && each.value.group_path == local.parent_group_path ? data.gitlab_group.parent_group[0].group_id : data.gitlab_group.enabled_groups[each.value.group_path].group_id
+  key       = each.value.key
+  value     = each.value.value
+  protected = false
+  masked    = false
+}
+
+# Variables for specific projects (when operate_at_root_group_level is false)
+resource "gitlab_project_variable" "enabled_projects" {
+  for_each = !var.operate_at_root_group_level && length(local.projects_to_enable) > 0 ? {
+    for pair in setproduct(keys(local.gitlab_agent_kubernetes_context_variables), local.projects_to_enable) :
+    "${pair[1]}__${pair[0]}" => {
+      project_path = pair[1]
+      key          = pair[0]
+      value        = local.gitlab_agent_kubernetes_context_variables[pair[0]]
+    }
+  } : {}
+
+  project   = data.gitlab_project.enabled_projects[each.value.project_path].id
+  key       = each.value.key
+  value     = each.value.value
+  protected = false
+  masked    = false
 }
 
 # Kubernetes resources

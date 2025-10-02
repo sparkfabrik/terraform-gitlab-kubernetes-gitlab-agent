@@ -3,6 +3,7 @@ variable "gitlab_project_name" {
   type        = string
   default     = ""
 }
+
 variable "gitlab_agent_deploy_enabled" {
   description = "Whether to deploy the GitLab Agent components. If false, only creates the GitLab Agent token, Kubernetes namespace and secret without deploying the agent itself."
   type        = bool
@@ -31,8 +32,8 @@ variable "gitlab_agent_token_description" {
   default     = "Token for the Gitlab Agent {{gitlab_agent_name}}."
 }
 
-variable "gitlab_agent_grant_access_to_entire_root_namespace" {
-  description = "Grant access to the entire root namespace. If false, you can provide a custom configuration file content using the variable `gitlab_agent_custom_config_file_content`. Otherwise, you will have to manually manage the access to the Gitlab Agent committing the proper configuration to the Gitlab project."
+variable "operate_at_root_group_level" {
+  description = "Operate at root group level. If true, grants access to entire root namespace and creates variables in root group. If false, behavior depends on groups_enabled and projects_enabled. This replaces gitlab_agent_grant_access_to_entire_root_namespace and gitlab_agent_create_variables_in_root_namespace."
   type        = bool
   default     = true
 }
@@ -43,15 +44,27 @@ variable "gitlab_agent_grant_user_access_to_root_namespace" {
   default     = false
 }
 
+variable "groups_enabled" {
+  description = "List of group paths where the GitLab Agent should be enabled. Only used when operate_at_root_group_level is false. If empty and projects_enabled is also empty, the parent group of the agent project will be used automatically."
+  type        = list(string)
+  default     = []
+}
+
+variable "projects_enabled" {
+  description = "List of project paths (with namespace) where the GitLab Agent should be enabled. Only used when operate_at_root_group_level is false. If empty and groups_enabled is also empty, the parent group of the agent project will be used automatically."
+  type        = list(string)
+  default     = []
+}
+
 variable "gitlab_agent_append_to_config_file" {
-  description = "Append the Gitlab Agent configuration to the configuration file created for the entire root namespace. This variable is only used when `gitlab_agent_grant_access_to_entire_root_namespace` is true."
+  description = "Append custom configuration to the Gitlab Agent configuration file. This content will be added at the end of the generated configuration."
   type        = string
   default     = ""
 
 }
 
 variable "gitlab_agent_custom_config_file_content" {
-  description = "The content of the Gitlab Agent configuration file. If not provided and `gitlab_agent_grant_access_to_entire_root_namespace` is true, the default configuration file will be used and the root namespace will be granted access to the Gitlab Agent. If you set this variable, it takes precedence over `gitlab_agent_grant_access_to_entire_root_namespace`."
+  description = "The content of the Gitlab Agent configuration file. If not provided, the default configuration file will be generated based on `operate_at_root_group_level`, `groups_enabled`, and `projects_enabled`. If you set this variable, it takes precedence over the automatic configuration generation."
   type        = string
   default     = ""
 }
@@ -66,12 +79,6 @@ variable "gitlab_agent_branch_name" {
   description = "The branch name where the Gitlab Agent configuration will be stored."
   type        = string
   default     = "main"
-}
-
-variable "gitlab_agent_create_variables_in_root_namespace" {
-  description = "Create two Gitlab CI/CD variables in the root namespace useful to configure the Kubernetes context and use the Gitlab Agent. These variables are created in the root namespace of the project defined in `gitlab_project_path_with_namespace`, which is the project that hosts the Gitlab Agent configuration."
-  type        = bool
-  default     = true
 }
 
 variable "gitlab_agent_variable_name_agent_id" {
