@@ -171,7 +171,7 @@ resource "gitlab_group_variable" "enabled_groups" {
 
 }
 
-# Variabili per progetti specifici (quando operate_at_root_group_level è false)
+# Variables for specific projects (when operate_at_root_group_level is false)
 resource "gitlab_project_variable" "enabled_projects" {
   for_each = !local.operate_at_root_group_level_computed && length(local.projects_to_enable) > 0 ? {
     for pair in setproduct(keys(local.gitlab_agent_kubernetes_context_variables), local.projects_to_enable) :
