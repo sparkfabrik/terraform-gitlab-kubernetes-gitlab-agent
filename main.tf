@@ -80,7 +80,7 @@ data "gitlab_group" "root_namespace" {
   full_path = local.project_root_namespace
 }
 
-# Parent group data source parent group if auto-detect
+# Data source for parent group when auto-detecting
 data "gitlab_group" "parent_group" {
   count     = local.auto_detect_parent ? 1 : 0
   full_path = local.parent_group_path
