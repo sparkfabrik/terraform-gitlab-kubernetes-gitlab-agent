@@ -65,9 +65,9 @@ data "gitlab_group" "root_namespace" {
   full_path = local.project_root_namespace
 }
 
-# Data source for parent group when auto-detecting
+# Data source for parent group (used for project creation when not at root level, and for auto-detect mode)
 data "gitlab_group" "parent_group" {
-  count     = local.auto_detect_parent ? 1 : 0
+  count     = !var.operate_at_root_group_level && local.parent_group_path != "" ? 1 : 0
   full_path = local.parent_group_path
 }
 
