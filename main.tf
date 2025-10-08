@@ -51,6 +51,8 @@ locals {
     (var.gitlab_agent_variable_name_agent_id) : gitlab_cluster_agent.this.name,
     (var.gitlab_agent_variable_name_agent_project) : local.project_path_with_namespace,
   }
+
+  current_user_is_maintainer_of_project = length([for member in data.gitlab_project_membership.this.members : member if member.id == data.gitlab_current_user.this.id && member.access_level == "maintainer"]) > 0
 }
 
 # Gitlab resources
@@ -96,7 +98,7 @@ data "gitlab_project_membership" "this" {
 }
 
 resource "gitlab_project_membership" "project" {
-  count        = var.autoassign_current_user_as_maintainer ? 1 : 0
+  count        = var.autoassign_current_user_as_maintainer && ! local.current_user_is_maintainer_of_project ? 1 : 0
   project      = local.project_id
   user_id      = data.gitlab_current_user.this.id
   access_level = "maintainer"

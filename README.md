@@ -75,6 +75,14 @@ provider "gitlab" {
 
 **ATTENTION:** as described in the [Gitlab provider documentation](https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs), the `CI_JOB_TOKEN` could cause issues when used as `token` for the Gitlab provider. For this module in particular, the `gitlab_cluster_agent` and `gitlab_cluster_agent_token` resources require authorization to access to the `/users` Gitlab API endpoint, which is not granted by the `CI_JOB_TOKEN`. You have to use a Gitlab personal access token with the `api` scope to authenticate the provider.
 
+## GitLab Agents user membership
+
+The current user used by the provider is automatically added as `maintainer` to the "GitLab Agents" project. If you don't want this behavior, just set the variable `var.autoassign_current_user_as_maintainer` to `false`. 
+
+Adding the user as `maintainer` to the newly created project ensures they have the permissions to commit and push to it.
+
+**ATTENTION:** If the current user is already added to the project but with a different role than `maintainer`, the apply will fail saying that a membership already exists 
+
 <!-- BEGIN_TF_DOCS -->
 ## Providers
 
