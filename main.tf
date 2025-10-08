@@ -87,18 +87,19 @@ data "gitlab_project" "enabled_projects" {
   path_with_namespace = each.value
 }
 
+# Data source to get all the memberships for the project
+data "gitlab_project_membership" "this" {
+  project_id = local.project_id
+}
+
 resource "gitlab_project" "project" {
   count        = local.use_existing_project == 0 ? 1 : 0
   name         = var.gitlab_project_name
   namespace_id = var.operate_at_root_group_level ? data.gitlab_group.root_namespace.group_id : data.gitlab_group.parent_group[0].group_id
 }
 
-data "gitlab_project_membership" "this" {
-  project_id = local.project_id
-}
-
 resource "gitlab_project_membership" "project" {
-  count        = var.autoassign_current_user_as_maintainer && ! local.current_user_is_maintainer_of_project ? 1 : 0
+  count        = var.autoassign_current_user_as_maintainer && !local.current_user_is_maintainer_of_project ? 1 : 0
   project      = local.project_id
   user_id      = data.gitlab_current_user.this.id
   access_level = "maintainer"
