@@ -157,7 +157,7 @@ variable "create_default_pod_anti_affinity" {
 }
 
 variable "autoassign_current_user_as_maintainer" {
-  description = "Automatically assign the current Gitlab user (from the Gitlab provider) as a maintainer of the created project. This is useful to ensure that the user has rights to commit and push the Gitlab Agent configuration file."
+  description = "Automatically assign the current GitLab user (from the GitLab provider) as a maintainer of the created project. This is useful to ensure that the user has rights to commit and push the GitLab Agent configuration file."
   type        = bool
   default     = true
 }

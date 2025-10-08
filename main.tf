@@ -56,10 +56,6 @@ locals {
 # Gitlab resources
 data "gitlab_current_user" "this" {}
 
-data "gitlab_user" "this" {
-  username = data.gitlab_current_user.this.username
-}
-
 data "gitlab_metadata" "this" {}
 
 data "gitlab_project" "this" {
@@ -98,7 +94,7 @@ resource "gitlab_project" "project" {
 resource "gitlab_project_membership" "project" {
   count        = var.autoassign_current_user_as_maintainer ? 1 : 0
   project      = local.project_id
-  user_id      = data.gitlab_user.this.id
+  user_id      = data.gitlab_current_user.this.id
   access_level = "maintainer"
 }
 
