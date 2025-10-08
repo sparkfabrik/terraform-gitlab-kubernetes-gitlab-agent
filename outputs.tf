@@ -43,4 +43,3 @@ output "gitlab_parent_group_auto_detected" {
   description = "Whether the parent group was automatically detected."
   value       = local.auto_detect_parent
 }
-
