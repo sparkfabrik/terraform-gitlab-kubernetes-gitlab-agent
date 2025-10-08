@@ -44,3 +44,7 @@ output "gitlab_parent_group_auto_detected" {
   value       = local.auto_detect_parent
 }
 
+output "gitlab_project_memberships" {
+  description = "List of current user memberships in the Gitlab project where the Gitlab Agents are installed."
+  value       = data.gitlab_project_membership.this.members
+}
