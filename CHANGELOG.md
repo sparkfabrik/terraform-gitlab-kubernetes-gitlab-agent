@@ -8,6 +8,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-10-08
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/1.0.0...1.1.0)
+
+### Added
+
+- refs platform/board#3920: add GitLab provider user as Maintainers of `local.project_id` project.
+
 ## [1.0.0] - 2025-10-02
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/0.13.0...1.0.0)

@@ -54,6 +54,8 @@ locals {
 }
 
 # Gitlab resources
+data "gitlab_current_user" "this" {}
+
 data "gitlab_metadata" "this" {}
 
 data "gitlab_project" "this" {
@@ -87,6 +89,13 @@ resource "gitlab_project" "project" {
   count        = local.use_existing_project == 0 ? 1 : 0
   name         = var.gitlab_project_name
   namespace_id = var.operate_at_root_group_level ? data.gitlab_group.root_namespace.group_id : data.gitlab_group.parent_group[0].group_id
+}
+
+resource "gitlab_project_membership" "project" {
+  count        = var.autoassign_current_user_as_maintainer ? 1 : 0
+  project      = local.project_id
+  user_id      = data.gitlab_current_user.this.id
+  access_level = "maintainer"
 }
 
 resource "gitlab_cluster_agent" "this" {
