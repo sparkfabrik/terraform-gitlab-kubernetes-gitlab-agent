@@ -97,7 +97,7 @@ resource "gitlab_project" "project" {
 }
 
 resource "gitlab_project_membership" "project" {
-  count        = var.autoassign_current_user_as_maintainer ? 1 : 0
+  count        = var.assign_current_user_as_maintainer ? 1 : 0
   project      = local.project_id
   user_id      = data.gitlab_current_user.this.id
   access_level = "maintainer"
