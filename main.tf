@@ -51,8 +51,6 @@ locals {
     (var.gitlab_agent_variable_name_agent_id) : gitlab_cluster_agent.this.name,
     (var.gitlab_agent_variable_name_agent_project) : local.project_path_with_namespace,
   }
-
-  current_user_is_maintainer_of_project = length([for member in data.gitlab_project_membership.this.members : member if member.name == data.gitlab_current_user.this.name && member.access_level == "maintainer"]) > 0
 }
 
 # Gitlab resources
@@ -87,11 +85,6 @@ data "gitlab_project" "enabled_projects" {
   path_with_namespace = each.value
 }
 
-# Data source to get all the memberships for the project
-data "gitlab_project_membership" "this" {
-  project_id = local.project_id
-}
-
 resource "gitlab_project" "project" {
   count        = local.use_existing_project == 0 ? 1 : 0
   name         = var.gitlab_project_name
@@ -99,7 +92,7 @@ resource "gitlab_project" "project" {
 }
 
 resource "gitlab_project_membership" "project" {
-  count        = var.autoassign_current_user_as_maintainer && !local.current_user_is_maintainer_of_project ? 1 : 0
+  count        = var.assign_current_user_as_maintainer ? 1 : 0
   project      = local.project_id
   user_id      = data.gitlab_current_user.this.id
   access_level = "maintainer"

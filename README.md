@@ -77,11 +77,11 @@ provider "gitlab" {
 
 ## GitLab Agents user membership
 
-The current user used by the provider is automatically added as `maintainer` to the "GitLab Agents" project. If you don't want this behavior, just set the variable `var.autoassign_current_user_as_maintainer` to `false`. 
+The current user used by the provider must be added as `maintainer` to the "GitLab Agents" project. By default, this behavior is disabled; just set the variable `var.autoassign_current_user_as_maintainer` to `true` if you want to enable it.
 
 Adding the user as `maintainer` to the newly created project ensures they have the permissions to commit and push to it.
 
-**ATTENTION:** If the current user is already added to the project but with a different role than `maintainer`, the apply will fail saying that a membership already exists 
+**ATTENTION:** If the current user is already added to the project the apply will fail saying that a membership already exists 
 
 <!-- BEGIN_TF_DOCS -->
 ## Providers
