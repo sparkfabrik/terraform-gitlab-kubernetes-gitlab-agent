@@ -77,7 +77,7 @@ provider "gitlab" {
 
 ## GitLab Agents user membership
 
-The current user used by the provider must be added as `maintainer` to the "GitLab Agents" project. This behavior by default is disable, just set the variable `var.autoassign_current_user_as_maintainer` to `true` if you want enable. 
+The current user used by the provider must be added as `maintainer` to the "GitLab Agents" project. By default, this behavior is disabled; just set the variable `var.autoassign_current_user_as_maintainer` to `true` if you want to enable it.
 
 Adding the user as `maintainer` to the newly created project ensures they have the permissions to commit and push to it.
 
