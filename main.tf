@@ -85,11 +85,6 @@ data "gitlab_project" "enabled_projects" {
   path_with_namespace = each.value
 }
 
-# Data source to get all the memberships for the project
-data "gitlab_project_membership" "this" {
-  project_id = local.project_id
-}
-
 resource "gitlab_project" "project" {
   count        = local.use_existing_project == 0 ? 1 : 0
   name         = var.gitlab_project_name
