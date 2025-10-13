@@ -14,7 +14,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
  
-- feat: remove autoassign current user by default 
+- feat: disable autoassign current user by default
 
 ## [1.1.0] - 2025-10-08
 
