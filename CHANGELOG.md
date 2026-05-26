@@ -8,13 +8,35 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-## [1.3.0] - 2026-05-25
+## [1.5.0] - 2026-05-26
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/1.4.0...1.5.0)
+
+### Changed
+
+- refs platform/board#4288: bump default `helm_chart_version` from `2.23.0` to `2.26.0` (GitLab Agent for Kubernetes)
+
+## [1.4.0] - 2026-02-19
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/1.3.0...1.4.0)
+
+### Changed
+
+- Upgrade agent default to 18.8.0 (helm chart 2.23.0)
+
+### Maintenance
+
+- chore(deps): update terraform-linters/setup-tflint action to v6
+- chore(deps): update actions/cache action to v5
+- chore(deps): update actions/checkout action to v6
+
+## [1.3.0] - 2025-12-03
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/1.2.0...1.3.0)
 
 ### Changed
 
-- refs platform/board#4288: bump default `helm_chart_version` from `2.23.0` to `2.26.0` (GitLab Agent for Kubernetes)
+- Update GitLab Agent default to 18.5.2 (helm chart 2.20.1)
 
 ## [1.2.0] - 2025-10-13
 
