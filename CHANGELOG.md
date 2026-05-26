@@ -8,12 +8,20 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-05-25
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/1.2.0...1.3.0)
+
+### Changed
+
+- refs platform/board#4288: bump default `helm_chart_version` from `2.23.0` to `2.26.0` (GitLab Agent for Kubernetes)
+
 ## [1.2.0] - 2025-10-13
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/1.1.0...1.2.0)
 
 ### Added
- 
+
 - feat: disable autoassign current user by default
 
 ## [1.1.0] - 2025-10-08
