@@ -8,6 +8,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-10-16
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/1.5.0...1.6.0)
+
+### Changed
+
+- refs platform/#5148: bump default `helm_chart_version` from `2.26.0` to `2.32.0` (GitLab Agent for Kubernetes 19.4.0)
+
 ## [1.5.0] - 2026-05-26
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-gitlab-kubernetes-gitlab-agent/compare/1.4.0...1.5.0)
